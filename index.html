@@ -38,13 +38,13 @@
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.25);
             border-radius: 26px;
             padding: 44px 30px;
 
             width: 96%;
             /* 📱 mobile: almost full, thori gap */
-            max-width: 560px;
+            max-width: 600px;
             /* 🖥️ desktop: clearly bigger */
 
             text-align: center;
@@ -72,12 +72,14 @@
             margin-top: 25px;
             padding: 14px 36px;
             border-radius: 50px;
-            background: linear-gradient(135deg, #ffb6c1, #ff69b4);
+            background: linear-gradient(135deg, #7b5fc9, #6ec1ff);
+            box-shadow: 0 8px 20px rgba(123, 95, 201, 0.35);
             color: #fff;
             font-weight: 600;
             cursor: pointer;
             display: inline-block;
         }
+
 
         @keyframes fadeUp {
             from {
@@ -360,9 +362,12 @@
             /* start slightly above viewport */
             width: 14px;
             height: 14px;
-            background: radial-gradient(circle at 30% 30%, #fff0f0, #ffc1d4);
+            /* background: radial-gradient(circle at 30% 30%, #fff0f0, #ffc1d4); */
+            background: radial-gradient(circle at 30% 30%, #e6ddff, #8a6fd1);
+            box-shadow: 0 0 10px rgba(138, 111, 209, 0.4);
+            opacity: 0.75;
+            /* opacity: 0.8; */
             border-radius: 50% 50% 50% 0;
-            opacity: 0.8;
             transform: rotate(0deg);
             animation: fall linear infinite;
             z-index: 2;
@@ -400,7 +405,8 @@
             border-radius: 50%;
             border: none;
             /* circle */
-            background: linear-gradient(135deg, #ffb6c1, #ff69b4);
+            background: linear-gradient(135deg, #7b5fc9, #6ec1ff);
+            box-shadow: 0 8px 20px rgba(123, 95, 201, 0.35);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -408,7 +414,7 @@
             /* arrow size */
             color: #fff;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25); */
             transition: all 0.2s ease;
             z-index: 1000;
         }
@@ -457,7 +463,7 @@
             text-shadow:
                 0 0 2px #000,
                 0 0 4px #000,
-                0 0 6px #000;
+                0 4px 6px #000;
         }
 
 
@@ -483,14 +489,8 @@
 
 
 
+
         /* ===== MOBILE TEXT EXTRA BIG ===== */
-
-
-
-
-
-
-
 
 
         @media (max-width: 600px) {
@@ -588,7 +588,6 @@
             <p>You’re one of those rare people who makes life brighter just by being in it.
                 You’re amazing exactly as you are, and you deserve all the happiness, love, and laughter the world can
                 give 🌸</p>
-            <p>"Never forget how precious you are to me ✨, and how deeply you are loved today and always 💖"</p>
             <div class="btn" onclick="next(3)">Tap to Continue</div>
         </div>
 
