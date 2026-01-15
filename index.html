@@ -44,6 +44,7 @@
 
             width: 96%;
             /* 📱 mobile: almost full, thori gap */
+
             max-width: 600px;
             /* 🖥️ desktop: clearly bigger */
 
@@ -346,15 +347,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
         /* Petals */
         .petal {
             position: fixed;
@@ -388,17 +380,12 @@
 
 
 
-
-
-
-
-
-
         .back-btn {
             position: fixed;
             top: 20px;
             left: 20px;
             width: 50px;
+
             /* base size */
             aspect-ratio: 1;
             /* height = width, perfect circle */
@@ -432,8 +419,6 @@
 
 
 
-
-
         /* HIGH CONTRAST TEXT – BLACK OUTLINE */
         /* body,
         h1,
@@ -450,6 +435,8 @@
                 -1px 1px 0 #000,
                 1px 1px 0 #000;
         } */
+
+
 
         body,
         h1,
@@ -469,8 +456,6 @@
 
 
 
-
-
         /* Screen 3 typing text - smaller & clean */
         #s3 h1 {
             font-size: 1.55rem;
@@ -485,7 +470,6 @@
             word-spacing: 0.08em;
             max-width: 100%;
         }
-
 
 
 
@@ -516,11 +500,6 @@
                 font-weight: 500;
             }
         }
-
-
-
-
-
 
 
 
@@ -639,16 +618,61 @@
         const name = "Ishmal";
         const music = document.getElementById("music");
         const typing = document.getElementById("typing");
-
-
-
         const text = `May ALLAH bless you with endless joy, love, and success 💖✨ May every step you take be guided with happiness 🌸, every dream you hold turn into reality and may your heart always be filled with peace, laughter, and beautiful moments. May  this year bring you new adventures, sweet memories, and countless reasons to smile. Happy Birthday to someone truly special 🎉🎂💖`;
-
         let i = 0;
-
-
-
         let currentScreen = 1;
+        let typingTimeout; // ← ye naya line add karna hai
+
+
+
+
+
+        function typeText() {
+            // Pehle wale typing ko rok do
+            if (typingTimeout) clearTimeout(typingTimeout);
+
+            let index = 0;
+            typing.textContent = "";
+
+            function write() {
+                typing.textContent += text[index];
+                index++;
+
+                if (index < text.length) {
+                    const delay = Math.random() * 40 + 35;
+                    typingTimeout = setTimeout(write, delay); // ← timeout id store karo
+                }
+            }
+
+            write();
+        }
+
+
+
+
+
+        // function typeText() {
+        //     let index = 0;
+        //     typing.textContent = "";
+
+        //     function write() {
+        //         // random natural delay (human typing feel)
+        //         const delay = Math.random() * 40 + 35;
+
+        //         typing.textContent += text[index];
+        //         index++;
+
+        //         if (index < text.length) {
+        //             setTimeout(write, delay);
+        //         }
+        //     }
+
+        //     write();
+        // }
+
+
+
+
 
         function next(n) {
             document.querySelectorAll(".card").forEach(c => c.classList.add("hidden"));
@@ -664,10 +688,17 @@
                 typeText();
             }
 
+
+            else if (typingTimeout) clearTimeout(typingTimeout); // ← ye line add kar do
+
+
             if (n === 4) finale();
 
             updateBackButton(); // <-- yaha call
         }
+
+
+
 
 
         function prev() {
@@ -676,6 +707,7 @@
             }
 
         }
+
 
 
 
@@ -693,6 +725,9 @@
         });
 
 
+
+
+
         function updateBackButton() {
             const btn = document.querySelector(".back-btn");
             if (currentScreen === 1) {
@@ -704,26 +739,6 @@
 
 
 
-
-
-        function typeText() {
-            let index = 0;
-            typing.textContent = "";
-
-            function write() {
-                // random natural delay (human typing feel)
-                const delay = Math.random() * 40 + 35;
-
-                typing.textContent += text[index];
-                index++;
-
-                if (index < text.length) {
-                    setTimeout(write, delay);
-                }
-            }
-
-            write();
-        }
 
 
 
