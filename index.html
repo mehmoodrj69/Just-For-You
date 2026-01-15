@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Just For You 💖</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merienda:wght@300..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            /* font-family: 'Poppins', sans-serif; */
+            font-family: 'Merienda', cursive;
+        }
+
+        body {
+            min-height: 100vh;
+            background: url("images/bg.jpg") no-repeat center/cover;
+            overflow: hidden;
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 26px;
+            padding: 44px 30px;
+
+            width: 96%;
+            /* 📱 mobile: almost full, thori gap */
+            max-width: 560px;
+            /* 🖥️ desktop: clearly bigger */
+
+            text-align: center;
+            color: #fff;
+            animation: fadeUp 1.2s ease;
+        }
+
+
+        .hidden {
+            display: none;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            opacity: .9;
+        }
+
+        .btn {
+            margin-top: 25px;
+            padding: 14px 36px;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #ffb6c1, #ff69b4);
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* CONFETTI */
+        .confetti {
+            position: fixed;
+            top: -10px;
+            width: 8px;
+            height: 14px;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(360deg);
+            }
+        }
+
+        .heart {
+            position: fixed;
+            top: -10px;
+            font-size: 20px;
+            animation: fall linear forwards;
+            text-shadow: none;
+        }
+
+        .final {
+            margin-top: 25px;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: 1.2s ease;
+        }
+
+        .final.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #msg {
+            white-space: pre-line;
+        }
+
+
+
+
+        /* ===== NEXT-LEVEL REALISTIC CAKE ===== */
+        .cake-zone {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin: 60px 0;
+        }
+
+        .cake-body {
+            position: relative;
+            width: 200px;
+            height: 230px;
+            animation: cakeBounce 2s ease-in-out infinite;
+        }
+
+        /* COMMON LAYER STYLE */
+        .cake-layer {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            /* border-radius: 25px; */
+            box-shadow: inset 0 -6px 12px rgba(0, 0, 0, 0.15), 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        /* BOTTOM LAYER */
+        .layer-bottom {
+            bottom: 0;
+            border-radius: 7px 7px 25px 25px;
+            background: linear-gradient(to bottom, #ff9eb5, #ff7b9e);
+        }
+
+        /* MIDDLE LAYER */
+        .layer-mid {
+            border-radius: 7px;
+            bottom: 50px;
+            background: linear-gradient(to bottom, #ffb6c1, #ff8ba9);
+        }
+
+        /* TOP LAYER */
+        .layer-top {
+            border-radius: 0 0 7px 7px;
+            bottom: 100px;
+            background: linear-gradient(to bottom, #ffe0ea, #ffb6c1);
+        }
+
+        /* LIGHT STRIP */
+        .cake-layer::after {
+            content: "";
+            position: absolute;
+            top: 6px;
+            left: 12px;
+            width: 85%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.35);
+            border-radius: 50px;
+        }
+
+        /* ICING */
+        .cake-icing {
+            position: absolute;
+            bottom: 145px;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            background: linear-gradient(to bottom, #fff, #f2f2f2);
+            border-radius: 25px 25px 0 0;
+            box-shadow: inset 0 -4px 6px rgba(0, 0, 0, 0.12), 0 6px 10px rgba(0, 0, 0, 0.25);
+            z-index: 3;
+        }
+
+        /* ICING DRIPS */
+        .cake-icing::before,
+        .cake-icing::after,
+        .cake-icing::backdrop {
+            content: "";
+            position: absolute;
+            top: 18px;
+            width: 22px;
+            height: 24px;
+            background: linear-gradient(#fff, #eee);
+            border-radius: 50%;
+        }
+
+        .cake-icing::before {
+            left: 35px;
+        }
+
+        .cake-icing::after {
+            right: 35px;
+        }
+
+
+
+        /* CANDLE */
+        .cake-candle {
+            position: absolute;
+            bottom: 170px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 42px;
+            background: repeating-linear-gradient(45deg, #fff, #fff 4px, #ff69b4 4px, #ff69b4 8px);
+            border-radius: 6px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            z-index: 5;
+        }
+
+        /* FLAME */
+        .cake-flame {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 22px;
+            background: radial-gradient(circle at 30% 30%, #fff, #ff9800, #ff5722);
+            border-radius: 50%;
+            box-shadow: 0 0 12px rgba(255, 153, 0, 0.9), 0 0 24px rgba(255, 87, 34, 0.6);
+            animation: flameFlicker 0.35s infinite alternate;
+        }
+
+        /* PLATE SHADOW */
+        .cake-plate {
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 160px;
+            height: 16px;
+            background: radial-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        /* SPARKLES */
+        .cake-sparkle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #fff;
+            animation: sparkleAnim 2s linear infinite alternate;
+        }
+
+        #sparkle1 {
+            top: -10px;
+            left: 20%;
+            animation-delay: 0s;
+        }
+
+        #sparkle2 {
+            top: -5px;
+            right: 25%;
+            animation-delay: 0.5s;
+        }
+
+        #sparkle3 {
+            top: 0;
+            left: 50%;
+            animation-delay: 1s;
+        }
+
+        /* CAKE BOUNCE */
+        @keyframes cakeBounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-6px);
+            }
+        }
+
+        /* FLAME FLICKER */
+        @keyframes flameFlicker {
+            from {
+                transform: translateX(-50%) scale(1);
+            }
+
+            to {
+                transform: translateX(-50%) scale(1.15);
+            }
+        }
+
+        /* SPARKLE ANIMATION */
+        @keyframes sparkleAnim {
+            0% {
+                transform: translateY(0) scale(0.8);
+                opacity: 0.7;
+            }
+
+            50% {
+                transform: translateY(-8px) scale(1.2);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(0) scale(0.8);
+                opacity: 0.7;
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* Petals */
+        .petal {
+            position: fixed;
+            top: -10%;
+            /* start slightly above viewport */
+            width: 14px;
+            height: 14px;
+            background: radial-gradient(circle at 30% 30%, #fff0f0, #ffc1d4);
+            border-radius: 50% 50% 50% 0;
+            opacity: 0.8;
+            transform: rotate(0deg);
+            animation: fall linear infinite;
+            z-index: 2;
+        }
+
+        /* Petal fall animation */
+        @keyframes fall {
+            0% {
+                transform: translateX(0) translateY(0) rotate(0deg);
+            }
+
+            100% {
+                transform: translateX(80px) translateY(110vh) rotate(360deg);
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 50px;
+            /* base size */
+            aspect-ratio: 1;
+            /* height = width, perfect circle */
+            border-radius: 50%;
+            border: none;
+            /* circle */
+            background: linear-gradient(135deg, #ffb6c1, #ff69b4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            /* arrow size */
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            transition: all 0.2s ease;
+            z-index: 1000;
+        }
+
+        .back-btn:hover {
+            filter: brightness(1.1);
+        }
+
+        .back-btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+
+
+
+
+
+
+        /* HIGH CONTRAST TEXT – BLACK OUTLINE */
+        /* body,
+        h1,
+        h2,
+        h3,
+        p,
+        .btn,
+        .aro-btn,
+        .final {
+            color: #fff;
+            text-shadow:
+                -1px -1px 0 #000,
+                1px -1px 0 #000,
+                -1px 1px 0 #000,
+                1px 1px 0 #000;
+        } */
+
+        body,
+        h1,
+        h2,
+        h3,
+        p,
+        .btn,
+        .aro-btn,
+        .final {
+            color: #fff;
+            text-shadow:
+                0 0 2px #000,
+                0 0 4px #000,
+                0 0 6px #000;
+        }
+
+
+
+
+
+
+        /* Screen 3 typing text - smaller & clean */
+        #s3 h1 {
+            font-size: 1.55rem;
+            /* default se chota */
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+
+
+
+        @media (max-width: 480px) {
+            #s3 h1 {
+                font-size: 1.4rem;
+                line-height: 1.55;
+            }
+        }
+
+
+
+
+
+
+
+
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 38px 24px;
+                /* mobile pe height control */
+                border-radius: 22px;
+            }
+
+            h1 {
+                font-size: 1.75rem;
+                /* heading lambi ho to bhi fit */
+            }
+
+            p {
+                font-size: 1.05rem;
+                line-height: 1.65;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <audio id="music" loop>
+        <source src="music/music.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="overlay">
+
+        <button class="back-btn aro-btn" onclick="prev()">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+
+
+        <!-- ========== SCREEN 1 ========== -->
+
+        <div class="card" id="s1">
+            <h1>Something Special Awaits 🌸</h1>
+            <p>Tap gently… I’ve poured a little piece of my heart into a small effort to create something truly special
+                just for you 💖</p>
+            <br>
+            <p>I hope this brings a smile to your heart and reminds you that you are truly someone’s special one, and
+                how deeply cherished you are ✨</p>
+            <div class="btn" onclick="next(2)">Tap to Continue</div>
+        </div>
+
+
+
+
+        <!-- ========== SCREEN 2 ========== -->
+
+        <div class="card hidden" id="s2">
+
+            <!-- <div class="back-btn ripple" onclick="goBack(event)">←</div> -->
+
+
+            <h1>Happy Birthday Ishmal 🎂</h1>
+            <p>You’re one of those rare people who makes life brighter just by being in it.
+                You’re amazing exactly as you are, and you deserve all the happiness, love, and laughter the world can
+                give 🌸</p>
+            <p>"Never forget how precious you are to me ✨, and how deeply you are loved today and always 💖"</p>
+            <div class="btn" onclick="next(3)">Tap to Continue</div>
+        </div>
+
+
+
+
+
+        <!-- ========== SCREEN 3 ========== -->
+
+        <div class="card hidden" id="s3">
+
+            <!-- <div class="back-btn ripple" onclick="goBack(event)">←</div> -->
+
+            <h1 id="typing"></h1>
+            <div class="btn" onclick="next(4)">Tap to Continue</div>
+        </div>
+
+
+
+
+
+
+        <!-- ========== SCREEN 4 ========== -->
+
+        <div class="card hidden" id="s4">
+
+            <!-- <div class="back-btn ripple" onclick="goBack(event)">←</div> -->
+
+            <div class="cake-zone">
+                <div class="cake-body">
+                    <div class="cake-layer layer-bottom"></div>
+                    <div class="cake-layer layer-mid"></div>
+                    <div class="cake-layer layer-top"></div>
+                    <div class="cake-icing"></div>
+                    <div class="cake-candle">
+                        <div class="cake-flame"></div>
+                    </div>
+                </div>
+            </div>
+
+            <h1>Make a Wish 🎂</h1>
+            <p id="msg"></p>
+            <p class="final" id="final"></p>
+        </div>
+
+    </div>
+
+    <script>
+        const name = "Ishmal";
+        const music = document.getElementById("music");
+        const typing = document.getElementById("typing");
+
+
+
+        const text = `May ALLAH bless you with endless joy, love, and success 💖✨ May every step you take be guided with happiness 🌸, every dream you hold turn into reality and may your heart always be filled with peace, laughter, and beautiful moments. May  this year bring you new adventures, sweet memories, and countless reasons to smile. Happy Birthday to someone truly special 🎉🎂💖`;
+
+        let i = 0;
+
+
+
+        let currentScreen = 1;
+
+        function next(n) {
+            document.querySelectorAll(".card").forEach(c => c.classList.add("hidden"));
+            document.getElementById("s" + n).classList.remove("hidden");
+
+            currentScreen = n; // ab visible screen ka number update ho gaya
+
+            music.play().catch(() => { });
+
+            if (n === 3) {
+                typing.innerHTML = "";
+                i = 0;
+                typeText();
+            }
+
+            if (n === 4) finale();
+
+            updateBackButton(); // <-- yaha call
+        }
+
+
+        function prev() {
+            if (currentScreen > 1) {
+                next(currentScreen - 1); // next() automatically card switch + updateBackButton karega
+            }
+
+        }
+
+
+
+        let touchStartX = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            let touchEndX = e.changedTouches[0].screenX;
+            if (touchEndX - touchStartX > 50) { // swipe right threshold
+                prev();
+            }
+        });
+
+
+        function updateBackButton() {
+            const btn = document.querySelector(".back-btn");
+            if (currentScreen === 1) {
+                btn.style.display = "none"; // first screen → hide
+            } else {
+                btn.style.display = "flex"; // other screens → show
+            }
+        }
+
+
+
+
+
+        function typeText() {
+            if (i < text.length) {
+                typing.innerHTML += text.charAt(i++);
+                setTimeout(typeText, 60);
+            }
+        }
+
+
+        function finale() {
+            const msg = document.getElementById("msg");
+            const final = document.getElementById("final");
+
+            // Display final message
+            msg.innerText = `Dear ${name},💖 You are loved more than words can say. Close your eyes and make a wish ✨`;
+
+            // Start confetti only here
+            const confettiInterval = setInterval(confetti, 300);
+            const heartInterval = setInterval(heart, 500);
+
+            // Show final text after 2.5s
+            setTimeout(() => {
+                final.innerText = `This was made just for you, ${name} 💖`;
+                final.classList.add("show");
+            }, 2500);
+
+            // Stop confetti after some time (optional, 10s)
+            setTimeout(() => {
+                clearInterval(confettiInterval);
+                clearInterval(heartInterval);
+            }, 10000);
+        }
+
+
+        function confetti() {
+            const c = document.createElement("div");
+            c.className = "confetti";
+
+            // Random horizontal position
+            c.style.left = Math.random() * 100 + "vw";
+
+            // Random symbol: heart or star
+            const symbols = ["❤️", "✨"];
+            const chosenSymbol = symbols[Math.floor(Math.random() * symbols.length)];
+            c.innerText = chosenSymbol;
+
+            // Size: hearts smaller, stars slightly bigger
+            let size;
+            if (chosenSymbol === "❤️") {
+                size = 12 + Math.random() * 6;  // 12px to 18px
+            } else {
+                size = 18 + Math.random() * 6;  // 18px to 24px
+            }
+            c.style.fontSize = size + "px";
+
+            // Opacity for smooth fade
+            const opacity = (0.5 + Math.random() * 0.5).toFixed(2); // 0.5 to 1
+            c.style.opacity = opacity;
+
+            // Smooth transition
+            c.style.transition = "opacity 1s linear";
+
+            // Random fall speed
+            c.style.animationDuration = 3 + Math.random() * 2 + "s";
+
+            // Random rotation
+            c.style.transform = `rotate(${Math.random() * 360}deg)`;
+
+            document.body.appendChild(c);
+
+            // Gradually fade out while falling
+            setTimeout(() => {
+                c.style.opacity = 0;
+            }, 3000);
+
+            // Remove after animation
+            setTimeout(() => c.remove(), 6000);
+        }
+
+
+
+        function heart() {
+            const h = document.createElement("div");
+            h.className = "heart";
+            h.innerText = "❤️";
+            h.style.left = Math.random() * 100 + "vw";
+            h.style.fontSize = 16 + Math.random() * 12 + "px";
+            h.style.animationDuration = 3 + Math.random() * 2 + "s";
+            document.body.appendChild(h);
+            setTimeout(() => h.remove(), 7000);
+        }
+
+
+
+        function createPetal() {
+            const petal = document.createElement("div");
+            petal.classList.add("petal");
+
+            // random horizontal position
+            petal.style.left = Math.random() * window.innerWidth + "px";
+
+            // random size for natural effect
+            const size = 10 + Math.random() * 8;
+            petal.style.width = size + "px";
+            petal.style.height = size + "px";
+
+            // random speed
+            petal.style.animationDuration = 6 + Math.random() * 6 + "s";
+
+            document.body.appendChild(petal);
+
+            setTimeout(() => {
+                petal.remove();
+            }, 12000);
+        }
+
+        // Start petals immediately, keep creating every 300ms
+        setInterval(createPetal, 300);
+
+        updateBackButton();
+
+
+    </script>
+
+</body>
+
+</html>
