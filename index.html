@@ -474,12 +474,7 @@
 
 
 
-        @media (max-width: 480px) {
-            #s3 h1 {
-                font-size: 1.4rem;
-                line-height: 1.55;
-            }
-        }
+
 
         /* ===== MOBILE TEXT EXTRA BIG ===== */
         @media (max-width: 600px) {
@@ -540,9 +535,15 @@
         }
 
 
-
-        p {
-            color: gray;
+        @media (max-width: 600px) {
+            .card {
+                width: 96%;
+                /* almost full screen */
+                max-width: none;
+                /* limit hata di */
+                padding: 40px 28px;
+                /* thora breathing space */
+            }
         }
     </style>
 </head>
