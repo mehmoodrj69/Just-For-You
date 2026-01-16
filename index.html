@@ -544,13 +544,48 @@
         <!-- ========== SCREEN 1 ========== -->
 
         <div class="card" id="s1">
-            <h1>Something Special Awaits 🌸</h1>
-            <p>Tap gently… I’ve poured a little piece of my heart into a small effort to create something truly special
-                just for you 💖</p>
+
+            <h1>
+                Something Special Awaits 🌸
+            </h1>
+
+            <!-- <p>
+                Tap gently… I’ve poured a little piece of my heart into a small effort to create something truly special
+                just for you 💖
+            </p>
             <br>
-            <p>I hope this brings a smile to your heart and reminds you that you are truly someone’s special one, and
-                how deeply cherished you are ✨</p>
-            <div class="btn" onclick="next(2)">Tap to Continue</div>
+            <p>
+                I hope this brings a smile to your heart and reminds you that you are truly someone’s special one, and
+                how deeply cherished you are ✨
+            </p> -->
+
+            <p class="type-s1"
+                data-text="Tap gently… I’ve poured a little piece of my heart into a small effort to create something truly special just for you 💖">
+            </p>
+
+
+            <!-- <p class="type-s1">
+                Tap gently… I’ve poured a little piece of my heart into a small effort to create something truly special
+                just for you 💖
+            </p> -->
+
+            <br>
+
+            <p class="type-s1"
+                data-text="I hope this brings a smile to your heart and reminds you that you are truly someone’s special one, and how deeply cherished you are ✨">
+            </p>
+
+
+            <!-- <p class="type-s1">
+                I hope this brings a smile to your heart and reminds you that you are truly someone’s special one, and
+                how deeply cherished you are ✨
+            </p> -->
+
+
+            <div class="btn" onclick="next(2)">
+                Tap to Continue
+            </div>
+
         </div>
 
 
@@ -562,11 +597,26 @@
 
             <!-- <div class="back-btn ripple" onclick="goBack(event)">←</div> -->
 
+            <h1>
+                Happy Birthday Ishmal 🎂
+            </h1>
 
-            <h1>Happy Birthday Ishmal 🎂</h1>
-            <p>You’re one of those rare people who makes life brighter just by being in it.
-                You’re amazing exactly as you are, and you deserve all the happiness, love, and laughter the world can
-                give 🌸</p>
+            <!-- <p>
+                You’re one of those rare people who makes life brighter just by being in it. You’re amazing exactly as
+                you are, and you deserve all the happiness and love the world can give 🌸
+            </p> -->
+
+            <p class="type-s2"
+                data-text="You’re one of those rare people who makes life brighter just by being in it. You’re amazing exactly as you are, and you deserve all the happiness and love the world can give 🌸">
+            </p>
+
+
+            <!-- <p class="type-s2">
+                You’re one of those rare people who makes life brighter just by being in it.
+                You’re amazing exactly as you are, and you deserve all the happiness and love the world can give 🌸
+            </p> -->
+
+
             <div class="btn" onclick="next(3)">Tap to Continue</div>
         </div>
 
@@ -608,7 +658,11 @@
             </div>
 
             <h1>Make a Wish 🎂</h1>
-            <p id="msg"></p>
+
+            <!-- <p id="msg"></p> -->
+
+            <p id="msg" data-text=""></p>
+
             <p class="final" id="final"></p>
         </div>
 
@@ -621,7 +675,63 @@
         const text = `May ALLAH bless you with endless joy, love, and success 💖✨ May every step you take be guided with happiness 🌸, every dream you hold turn into reality and may your heart always be filled with peace, laughter, and beautiful moments. May  this year bring you new adventures, sweet memories, and countless reasons to smile. Happy Birthday to someone truly special 🎉🎂💖`;
         let i = 0;
         let currentScreen = 1;
-        let typingTimeout; // ← ye naya line add karna hai
+        let typingTimeout; // ← ye naya line add karna hai #s3
+        let paraTimeouts = []; // ← typing s1, s2, s4
+
+
+
+
+
+
+
+
+        // ===== SAFE PARAGRAPH TYPING SYSTEM =====
+
+        function clearParagraphTyping() {
+            paraTimeouts.forEach(t => clearTimeout(t));
+            paraTimeouts = [];
+        }
+
+        function typeParagraphsOneByOne(elements, speed = 45) {
+            clearParagraphTyping();
+
+            let pIndex = 0;
+
+            function typeNextParagraph() {
+                if (pIndex >= elements.length) return;
+
+                const el = elements[pIndex];
+                const fullText = el.getAttribute("data-text");
+
+                // har typing fresh start ho
+                el.textContent = "";
+
+                let charIndex = 0;
+
+                function typeChar() {
+                    el.textContent += fullText[charIndex];
+                    charIndex++;
+
+                    if (charIndex < fullText.length) {
+                        paraTimeouts.push(setTimeout(typeChar, speed));
+                    } else {
+                        pIndex++;
+                        paraTimeouts.push(setTimeout(typeNextParagraph, 300)); // next paragraph delay
+                    }
+                }
+
+                typeChar();
+            }
+
+            typeNextParagraph();
+        }
+
+
+        function resetTypedParagraphs(selector) {
+            document.querySelectorAll(selector).forEach(p => {
+                p.textContent = ""; // poora text clear
+            });
+        }
 
 
 
@@ -681,6 +791,39 @@
             currentScreen = n; // ab visible screen ka number update ho gaya
 
             music.play().catch(() => { });
+
+
+
+            // #s1, #s2, #s4 typing
+
+            // if (n === 1) {
+            //     typeParagraphsOneByOne(document.querySelectorAll(".type-s1"));
+            // }
+
+            if (n === 1) {
+                clearParagraphTyping();               // 🧹 purane timeouts band
+                resetTypedParagraphs(".type-s1");     // 🧼 dono <p> clear
+                typeParagraphsOneByOne(
+                    document.querySelectorAll(".type-s1")
+                );
+            }
+
+            if (n === 2) {
+                typeParagraphsOneByOne(document.querySelectorAll(".type-s2"));
+            }
+
+            if (n === 4) {
+                const msg = document.getElementById("msg");
+                msg.setAttribute(
+                    "data-text",
+                    `Dear ${name},💖 You are loved more than words can say. Close your eyes and make a wish ✨`
+                );
+                typeParagraphsOneByOne([msg]);
+            }
+
+
+
+            // #s3 typing
 
             if (n === 3) {
                 typing.innerHTML = "";
@@ -742,29 +885,80 @@
 
 
 
-        function finale() {
-            const msg = document.getElementById("msg");
-            const final = document.getElementById("final");
+        // function finale() {
+        //     const msg = document.getElementById("msg");
+        //     const final = document.getElementById("final");
 
-            // Display final message
-            msg.innerText = `Dear ${name},💖 You are loved more than words can say. Close your eyes and make a wish ✨`;
 
-            // Start confetti only here
-            const confettiInterval = setInterval(confetti, 300);
-            const heartInterval = setInterval(heart, 500);
+        //     // 1️⃣ pehle text bilkul clear
+        //     msg.textContent = "";
 
-            // Show final text after 2.5s
-            setTimeout(() => {
-                final.innerText = `This was made just for you, ${name} 💖`;
-                final.classList.add("show");
-            }, 2500);
+        //     // 2️⃣ data-text set karo
+        //     msg.setAttribute(
+        //         "data-text",
+        //         `Dear ${name},💖 You are loved more than words can say. Close your eyes and make a wish ✨`
+        //     );
 
-            // Stop confetti after some time (optional, 10s)
-            setTimeout(() => {
-                clearInterval(confettiInterval);
-                clearInterval(heartInterval);
-            }, 10000);
-        }
+        //     // 3️⃣ typing start karo
+        //     typeParagraphsOneByOne([msg]);
+
+        //     // Start confetti only here
+        //     const confettiInterval = setInterval(confetti, 300);
+        //     const heartInterval = setInterval(heart, 500);
+
+        //     // Show final text after 2.5s
+        //     setTimeout(() => {
+        //         final.innerText = `This was made just for you, ${name} 💖`;
+        //         final.classList.add("show");
+        //     }, 4800);
+
+        //     // Stop confetti after some time (optional, 10s)
+        //     setTimeout(() => {
+        //         clearInterval(confettiInterval);
+        //         clearInterval(heartInterval);
+        //     }, 10000);
+        // }
+
+
+function finale() {
+    const msg = document.getElementById("msg");
+    const final = document.getElementById("final");
+
+    // 🔁 RESET FINAL TEXT (MOST IMPORTANT)
+    final.innerText = "";
+    final.classList.remove("show");
+
+    // 1️⃣ msg clear
+    msg.textContent = "";
+
+    // 2️⃣ data-text set
+    msg.setAttribute(
+        "data-text",
+        `Dear ${name},💖 You are loved more than words can say. Close your eyes and make a wish ✨`
+    );
+
+    // 3️⃣ typing start
+    typeParagraphsOneByOne([msg]);
+
+    // 🎉 confetti
+    const confettiInterval = setInterval(confetti, 300);
+    const heartInterval = setInterval(heart, 500);
+
+    // ⏳ FINAL TEXT — SAME DELAY EVERY TIME
+    setTimeout(() => {
+        final.innerText = `This was made just for you, ${name} 💖`;
+        final.classList.add("show");
+    }, 4800);
+
+    // 🛑 stop effects
+    setTimeout(() => {
+        clearInterval(confettiInterval);
+        clearInterval(heartInterval);
+    }, 10000);
+}
+
+
+
 
 
         function confetti() {
@@ -849,10 +1043,17 @@
             }, 12000);
         }
 
+
+
+
+
+
+
         // Start petals immediately, keep creating every 300ms
         setInterval(createPetal, 300);
-
         updateBackButton();
+        resetTypedParagraphs(".type-s1");
+        typeParagraphsOneByOne(document.querySelectorAll(".type-s1"));
 
 
     </script>
