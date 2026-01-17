@@ -473,6 +473,31 @@
 
 
 
+        /* S2 TITLE ANIMATION */
+        .s2-title {
+            opacity: 0;
+            transform: translateY(25px);
+        }
+
+        .s2-title.show {
+            animation: s2FadeUp 1.2s ease forwards;
+        }
+
+        @keyframes s2FadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+
+
 
         /* ===== MOBILE TEXT EXTRA BIG ===== */
 
@@ -524,6 +549,49 @@
                 line-height: 1.35;
             } */
 
+        }
+
+
+
+
+
+
+        /* ===== TYPING CURSOR – JACARANDA PREMIUM ===== */
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.2em;
+            border-radius: 2px;
+            margin-left: 4px;
+            vertical-align: bottom;
+
+            background: #a183ef;
+            /* jacaranda purple */
+
+            /* 🔥 SAME HIGHLIGHT AS TEXT */
+            box-shadow:
+                0 0 2px #484848,
+                0 0 4px #484848,
+                0 4px 6px #484848;
+
+            animation: blink 1s step-end infinite;
+        }
+
+
+
+        /* smooth blink */
+        @keyframes blink {
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.15;
+            }
+
+            100% {
+                opacity: 1;
+            }
         }
     </style>
 </head>
@@ -597,7 +665,11 @@
 
             <!-- <div class="back-btn ripple" onclick="goBack(event)">←</div> -->
 
-            <h1>
+            <!-- <h1>
+                Happy Birthday Ishmal 🎂
+            </h1> -->
+
+            <h1 class="s2-title">
                 Happy Birthday Ishmal 🎂
             </h1>
 
@@ -677,6 +749,7 @@
         let currentScreen = 1;
         let typingTimeout; // ← ye naya line add karna hai #s3
         let paraTimeouts = []; // ← typing s1, s2, s4
+        let finalTimeout; // ← s4 final text delay handle karega
 
 
 
@@ -692,6 +765,7 @@
             paraTimeouts = [];
         }
 
+
         function typeParagraphsOneByOne(elements, speed = 45) {
             clearParagraphTyping();
 
@@ -703,21 +777,38 @@
                 const el = elements[pIndex];
                 const fullText = el.getAttribute("data-text");
 
-                // har typing fresh start ho
-                el.textContent = "";
+                // har typing fresh start ho with blinking cursor
+                // el.textContent = "";
+                el.innerHTML = '<span class="text"></span><span class="cursor"></span>';
 
                 let charIndex = 0;
 
                 function typeChar() {
-                    el.textContent += fullText[charIndex];
+                    // el.textContent += fullText[charIndex];
+                    el.querySelector(".text").textContent += fullText[charIndex];
+
                     charIndex++;
 
                     if (charIndex < fullText.length) {
                         paraTimeouts.push(setTimeout(typeChar, speed));
+                        // } else {
+                        //     pIndex++;
+                        //     paraTimeouts.push(setTimeout(typeNextParagraph, 300)); // next paragraph delay
+                        // }
                     } else {
+                        // typing complete → cursor fade + glow remove
+                        const cursor = el.querySelector(".cursor");
+                        if (cursor) {
+                            cursor.style.opacity = "0";
+                            cursor.style.boxShadow = "0 0 20px rgba(138, 111, 209, 0.9)";
+                            setTimeout(() => cursor.remove(), 800);
+                        }
+
+
                         pIndex++;
-                        paraTimeouts.push(setTimeout(typeNextParagraph, 300)); // next paragraph delay
+                        paraTimeouts.push(setTimeout(typeNextParagraph, 300));
                     }
+
                 }
 
                 typeChar();
@@ -727,9 +818,15 @@
         }
 
 
+        // function resetTypedParagraphs(selector) {
+        //     document.querySelectorAll(selector).forEach(p => {
+        //         p.textContent = ""; // poora text clear
+        //     });
+        // }
+
         function resetTypedParagraphs(selector) {
             document.querySelectorAll(selector).forEach(p => {
-                p.textContent = ""; // poora text clear
+                p.innerHTML = "";
             });
         }
 
@@ -737,28 +834,60 @@
 
 
 
+
+        // function typeText() {
+        //     // Pehle wale typing ko rok do
+        //     if (typingTimeout) clearTimeout(typingTimeout);
+
+        //     let index = 0;
+        //     typing.textContent = "";
+
+        //     function write() {
+        //         typing.textContent += text[index];
+        //         index++;
+
+        //         if (index < text.length) {
+        //             const delay = Math.random() * 40 + 35;
+        //             typingTimeout = setTimeout(write, delay); // ← timeout id store karo
+        //         }
+        //     }
+
+        //     write();
+        // }
+
         function typeText() {
-            // Pehle wale typing ko rok do
             if (typingTimeout) clearTimeout(typingTimeout);
 
             let index = 0;
-            typing.textContent = "";
+            typing.innerHTML = '<span class="text"></span><span class="cursor"></span>';
+
+            const textSpan = typing.querySelector(".text");
+            const cursor = typing.querySelector(".cursor");
 
             function write() {
-                typing.textContent += text[index];
+                textSpan.textContent += text[index];
                 index++;
 
                 if (index < text.length) {
                     const delay = Math.random() * 40 + 35;
-                    typingTimeout = setTimeout(write, delay); // ← timeout id store karo
+                    typingTimeout = setTimeout(write, delay);
+                } else {
+                    // typing complete → cursor glow + fade
+                    setTimeout(() => {
+                        cursor.style.boxShadow = "0 0 22px rgba(138, 111, 209, 1)";
+                        cursor.style.opacity = "0";
+                    }, 500);
+
+                    setTimeout(() => {
+                        cursor.remove();
+                    }, 1300);
+
+
                 }
             }
 
             write();
         }
-
-
-
 
 
         // function typeText() {
@@ -779,6 +908,7 @@
 
         //     write();
         // }
+
 
 
 
@@ -808,9 +938,41 @@
                 );
             }
 
+
+
+
             if (n === 2) {
-                typeParagraphsOneByOne(document.querySelectorAll(".type-s2"));
+
+                // 🔄 pehle sab clear
+                clearParagraphTyping();
+                resetTypedParagraphs(".type-s2");
+
+                const title = document.querySelector("#s2 .s2-title");
+
+                // h1 ko reset state me lao
+                title.classList.remove("show");
+
+                // thora sa delay taake DOM ready ho
+                setTimeout(() => {
+
+                    // 🎬 h1 animation start
+                    title.classList.add("show");
+
+                    // ⏳ h1 animation ke baad paragraph typing
+                    setTimeout(() => {
+                        typeParagraphsOneByOne(
+                            document.querySelectorAll(".type-s2")
+                        );
+                    }, 1200); // same as CSS animation time
+
+                }, 100);
             }
+
+
+
+            // if (n === 2) {
+            //     typeParagraphsOneByOne(document.querySelectorAll(".type-s2"));
+            // }
 
             if (n === 4) {
                 const msg = document.getElementById("msg");
@@ -920,42 +1082,56 @@
         // }
 
 
-function finale() {
-    const msg = document.getElementById("msg");
-    const final = document.getElementById("final");
+        function finale() {
+            const msg = document.getElementById("msg");
+            const final = document.getElementById("final");
 
-    // 🔁 RESET FINAL TEXT (MOST IMPORTANT)
-    final.innerText = "";
-    final.classList.remove("show");
 
-    // 1️⃣ msg clear
-    msg.textContent = "";
+            // 🔄 RESET final text every time screen opens
+            if (finalTimeout) clearTimeout(finalTimeout);
+            final.textContent = "";
+            final.classList.remove("show");
 
-    // 2️⃣ data-text set
-    msg.setAttribute(
-        "data-text",
-        `Dear ${name},💖 You are loved more than words can say. Close your eyes and make a wish ✨`
-    );
 
-    // 3️⃣ typing start
-    typeParagraphsOneByOne([msg]);
+            // 🔁 RESET FINAL TEXT (MOST IMPORTANT)
+            final.innerText = "";
+            final.classList.remove("show");
 
-    // 🎉 confetti
-    const confettiInterval = setInterval(confetti, 300);
-    const heartInterval = setInterval(heart, 500);
+            // 1️⃣ msg clear
+            msg.textContent = "";
 
-    // ⏳ FINAL TEXT — SAME DELAY EVERY TIME
-    setTimeout(() => {
-        final.innerText = `This was made just for you, ${name} 💖`;
-        final.classList.add("show");
-    }, 4800);
+            // 2️⃣ data-text set
+            msg.setAttribute(
+                "data-text",
+                `Dear ${name},💖 You are loved more than words can say. Close your eyes and make a wish ✨`
+            );
 
-    // 🛑 stop effects
-    setTimeout(() => {
-        clearInterval(confettiInterval);
-        clearInterval(heartInterval);
-    }, 10000);
-}
+            // 3️⃣ typing start
+            typeParagraphsOneByOne([msg]);
+
+            // 🎉 confetti
+            const confettiInterval = setInterval(confetti, 300);
+            const heartInterval = setInterval(heart, 500);
+
+            // // ⏳ FINAL TEXT — SAME DELAY EVERY TIME
+            // setTimeout(() => {
+            //     final.innerText = `This was made just for you, ${name} 💖`;
+            //     final.classList.add("show");
+            // }, 4800);
+
+            // ⏳ show final line AFTER typing completes
+            finalTimeout = setTimeout(() => {
+                final.textContent = `This was made just for you, ${name} 💖`;
+                final.classList.add("show");
+            }, 4800);
+
+
+            // 🛑 stop effects
+            setTimeout(() => {
+                clearInterval(confettiInterval);
+                clearInterval(heartInterval);
+            }, 10000);
+        }
 
 
 
