@@ -565,14 +565,14 @@
             margin-left: 4px;
             vertical-align: bottom;
 
-            background: #a183ef;
+            background: #ae8eff;
             /* jacaranda purple */
 
             /* 🔥 SAME HIGHLIGHT AS TEXT */
             box-shadow:
-                0 0 2px #484848,
-                0 0 4px #484848,
-                0 4px 6px #484848;
+                0 0 2px #333333,
+                0 0 4px #333333,
+                0 4px 6px #333333;
 
             animation: blink 1s step-end infinite;
         }
@@ -592,6 +592,21 @@
             100% {
                 opacity: 1;
             }
+        }
+
+
+        /* ===== CONTINUE BUTTON PREMIUM APPEAR ===== */
+        .btn {
+            opacity: 0;
+            transform: translateY(12px);
+            pointer-events: none;
+            transition: opacity 0.9s ease, transform 0.9s ease;
+        }
+
+        .btn.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
         }
     </style>
 </head>
@@ -613,7 +628,7 @@
 
         <div class="card" id="s1">
 
-            <h1>
+            <h1 class="s2-title">
                 Something Special Awaits 🌸
             </h1>
 
@@ -729,7 +744,7 @@
                 </div>
             </div>
 
-            <h1>Make a Wish 🎂</h1>
+            <h1 class="s2-title">Make a Wish 🎂</h1>
 
             <!-- <p id="msg"></p> -->
 
@@ -750,6 +765,12 @@
         let typingTimeout; // ← ye naya line add karna hai #s3
         let paraTimeouts = []; // ← typing s1, s2, s4
         let finalTimeout; // ← s4 final text delay handle karega
+        // ===== TYPING RUN-ONCE FLAGS =====
+        let s1Typed = false;
+        let s2Typed = false;
+        let s3Typed = false;
+        let s4Typed = false;
+
 
 
 
@@ -766,56 +787,44 @@
         }
 
 
-        function typeParagraphsOneByOne(elements, speed = 45) {
+        function typeParagraphsOneByOne(elements, speed = 45, onComplete = null) {
             clearParagraphTyping();
-
             let pIndex = 0;
 
             function typeNextParagraph() {
-                if (pIndex >= elements.length) return;
+                if (pIndex >= elements.length) {
+                    if (onComplete) onComplete(); // ✅ ALL DONE
+                    return;
+                }
 
                 const el = elements[pIndex];
                 const fullText = el.getAttribute("data-text");
-
-                // har typing fresh start ho with blinking cursor
-                // el.textContent = "";
                 el.innerHTML = '<span class="text"></span><span class="cursor"></span>';
 
                 let charIndex = 0;
 
                 function typeChar() {
-                    // el.textContent += fullText[charIndex];
                     el.querySelector(".text").textContent += fullText[charIndex];
-
                     charIndex++;
 
                     if (charIndex < fullText.length) {
                         paraTimeouts.push(setTimeout(typeChar, speed));
-                        // } else {
-                        //     pIndex++;
-                        //     paraTimeouts.push(setTimeout(typeNextParagraph, 300)); // next paragraph delay
-                        // }
                     } else {
-                        // typing complete → cursor fade + glow remove
                         const cursor = el.querySelector(".cursor");
                         if (cursor) {
                             cursor.style.opacity = "0";
-                            cursor.style.boxShadow = "0 0 20px rgba(138, 111, 209, 0.9)";
+                            cursor.style.boxShadow = "0 0 20px rgba(138,111,209,0.9)";
                             setTimeout(() => cursor.remove(), 800);
                         }
-
-
                         pIndex++;
                         paraTimeouts.push(setTimeout(typeNextParagraph, 300));
                     }
-
                 }
-
                 typeChar();
             }
-
             typeNextParagraph();
         }
+
 
 
         // function resetTypedParagraphs(selector) {
@@ -855,7 +864,7 @@
         //     write();
         // }
 
-        function typeText() {
+        function typeText(onComplete) {
             if (typingTimeout) clearTimeout(typingTimeout);
 
             let index = 0;
@@ -872,22 +881,21 @@
                     const delay = Math.random() * 40 + 35;
                     typingTimeout = setTimeout(write, delay);
                 } else {
-                    // typing complete → cursor glow + fade
+                    // cursor fade + glow
                     setTimeout(() => {
-                        cursor.style.boxShadow = "0 0 22px rgba(138, 111, 209, 1)";
+                        cursor.style.boxShadow = "0 0 22px rgba(138,111,209,1)";
                         cursor.style.opacity = "0";
-                    }, 500);
+                    }, 400);
 
                     setTimeout(() => {
                         cursor.remove();
-                    }, 1300);
-
-
+                        if (onComplete) onComplete(); // ✅ SIGNAL
+                    }, 1200);
                 }
             }
-
             write();
         }
+
 
 
         // function typeText() {
@@ -915,7 +923,13 @@
 
 
         function next(n) {
+            // 🔒 hide all buttons on new screen
+            document.querySelectorAll("#s" + n + " .btn").forEach(b => {
+                b.classList.remove("show");
+            });
+
             document.querySelectorAll(".card").forEach(c => c.classList.add("hidden"));
+
             document.getElementById("s" + n).classList.remove("hidden");
 
             currentScreen = n; // ab visible screen ka number update ho gaya
@@ -930,68 +944,236 @@
             //     typeParagraphsOneByOne(document.querySelectorAll(".type-s1"));
             // }
 
+            // if (n === 1) {
+            //     clearParagraphTyping();               // 🧹 purane timeouts band
+            //     resetTypedParagraphs(".type-s1");     // 🧼 dono <p> clear
+            //     typeParagraphsOneByOne(
+            //         document.querySelectorAll(".type-s1")
+            //     );
+            // }
+
             if (n === 1) {
-                clearParagraphTyping();               // 🧹 purane timeouts band
-                resetTypedParagraphs(".type-s1");     // 🧼 dono <p> clear
-                typeParagraphsOneByOne(
-                    document.querySelectorAll(".type-s1")
-                );
-            }
 
-
-
-
-            if (n === 2) {
-
-                // 🔄 pehle sab clear
-                clearParagraphTyping();
-                resetTypedParagraphs(".type-s2");
-
-                const title = document.querySelector("#s2 .s2-title");
-
-                // h1 ko reset state me lao
+                const title = document.querySelector("#s1 .s2-title");
                 title.classList.remove("show");
 
-                // thora sa delay taake DOM ready ho
+                clearParagraphTyping();
+                resetTypedParagraphs(".type-s1");
+
                 setTimeout(() => {
 
-                    // 🎬 h1 animation start
+                    // 🎬 h1 animation
                     title.classList.add("show");
 
-                    // ⏳ h1 animation ke baad paragraph typing
-                    setTimeout(() => {
-                        typeParagraphsOneByOne(
-                            document.querySelectorAll(".type-s2")
-                        );
-                    }, 1200); // same as CSS animation time
+                    // ⏳ h1 ke baad paragraph typing
+                    if (!s1Typed) {
+                        setTimeout(() => {
+                            typeParagraphsOneByOne(
+                                document.querySelectorAll(".type-s1"),
+                                45,
+                                () => {
+                                    document.querySelector("#s1 .btn").classList.add("show");
+                                }
+                            );
+
+                            s1Typed = true;
+                        }, 1200); // SAME as CSS animation
+                    } else {
+                        document.querySelectorAll(".type-s1").forEach(p => {
+                            p.textContent = p.getAttribute("data-text");
+                        });
+
+                        // ✅ button wapas show karo
+                        document.querySelector("#s1 .btn").classList.add("show");
+                    }
+
 
                 }, 100);
             }
 
 
 
+
+
+
             // if (n === 2) {
-            //     typeParagraphsOneByOne(document.querySelectorAll(".type-s2"));
+
+            //     // 🔄 pehle sab clear
+            //     clearParagraphTyping();
+            //     resetTypedParagraphs(".type-s2");
+
+            //     const title = document.querySelector("#s2 .s2-title");
+
+            //     // h1 ko reset state me lao
+            //     title.classList.remove("show");
+
+            //     // thora sa delay taake DOM ready ho
+            //     setTimeout(() => {
+
+            //         // 🎬 h1 animation start
+            //         title.classList.add("show");
+
+            //         // ⏳ h1 animation ke baad paragraph typing
+            //         setTimeout(() => {
+            //             typeParagraphsOneByOne(
+            //                 document.querySelectorAll(".type-s2")
+            //             );
+            //         }, 1200); // same as CSS animation time
+
+            //     }, 100);
+            // }
+
+            if (n === 2) {
+                const title = document.querySelector("#s2 .s2-title");
+
+                if (!s2Typed) {
+                    // 1️⃣ Reset everything
+                    clearParagraphTyping();
+                    resetTypedParagraphs(".type-s2");
+                    title.classList.remove("show");
+                    document.querySelector("#s2 .btn").classList.remove("show");
+
+                    // 2️⃣ Small delay for DOM
+                    setTimeout(() => {
+
+                        // 3️⃣ h1 animation
+                        title.classList.add("show");
+
+                        // 4️⃣ After h1 animation complete (match CSS 1.2s)
+                        setTimeout(() => {
+
+                            // 5️⃣ Big confetti blast
+                            bigConfettiBlast();
+
+                            // 6️⃣ After confetti complete (3s), start paragraph typing
+                            setTimeout(() => {
+                                typeParagraphsOneByOne(
+                                    document.querySelectorAll(".type-s2"),
+                                    45,
+                                    () => {
+                                        // 7️⃣ After typing complete, show button
+                                        document.querySelector("#s2 .btn").classList.add("show");
+                                    }
+                                );
+                            }, 3000); // confetti duration
+
+                        }, 1200); // h1 animation duration
+
+                    }, 100);
+
+                    // 8️⃣ Mark first visit done
+                    s2Typed = true;
+
+                } else {
+                    // Second visit → sirf h1 animation
+                    title.classList.add("show");
+
+                    // paragraph pehle se dikhe
+                    document.querySelectorAll(".type-s2").forEach(p => {
+                        p.textContent = p.getAttribute("data-text");
+                    });
+
+                    // button already dikhe
+                    document.querySelector("#s2 .btn").classList.add("show");
+                }
+            }
+
+
+
+
+
+
+            // // #s3 typing
+
+            // if (n === 3) {
+            //     typing.innerHTML = "";
+            //     i = 0;
+            //     typeText();
+            // }
+
+            if (n === 3) {
+
+                if (!s3Typed) {
+                    typing.innerHTML = "";
+
+                    setTimeout(() => {
+                        typeText(() => {
+                            document.querySelector("#s3 .btn").classList.add("show");
+                        });
+                        s3Typed = true;
+                    }, 150);
+
+                } else {
+                    // 🔁 back aane par
+                    typing.textContent = text;
+                    document.querySelector("#s3 .btn").classList.add("show");
+                }
+            }
+
+
+
+
+
+
+            // if (n === 4) {
+            //     const msg = document.getElementById("msg");
+            //     msg.setAttribute(
+            //         "data-text",
+            //         `Dear ${name},💖 You are loved more than words can say. Close your eyes and make a wish ✨`
+            //     );
+            //     typeParagraphsOneByOne([msg]);
             // }
 
             if (n === 4) {
+
+                const title = document.querySelector("#s4 .s2-title");
                 const msg = document.getElementById("msg");
-                msg.setAttribute(
-                    "data-text",
-                    `Dear ${name},💖 You are loved more than words can say. Close your eyes and make a wish ✨`
-                );
-                typeParagraphsOneByOne([msg]);
+
+                title.classList.remove("show");
+                clearParagraphTyping();
+                resetTypedParagraphs("#msg");
+
+                setTimeout(() => {
+
+                    // 🎬 h1 animation
+                    title.classList.add("show");
+
+                    // ⏳ h1 ke baad typing
+                    if (!s4Typed) {
+
+                        msg.setAttribute(
+                            "data-text",
+                            `Dear ${name},💖 You are loved more than words can say. Close your eyes and make a wish ✨`
+                        );
+
+                        setTimeout(() => {
+                            typeParagraphsOneByOne(
+                                [msg],
+                                45,
+                                () => {
+                                    document.querySelector("#s4 .btn")?.classList.add("show");
+                                }
+                            );
+
+                            s4Typed = true;
+                        }, 1200);
+
+                    } else {
+                        msg.textContent =
+                            `Dear ${name},💖 You are loved more than words can say. Close your eyes and make a wish ✨`;
+
+                        // ✅ agar future me button ho
+                        document.querySelector("#s4 .btn")?.classList.add("show");
+                    }
+
+
+                }, 100);
+
+                finale();
             }
 
 
 
-            // #s3 typing
-
-            if (n === 3) {
-                typing.innerHTML = "";
-                i = 0;
-                typeText();
-            }
 
 
             else if (typingTimeout) clearTimeout(typingTimeout); // ← ye line add kar do
@@ -1003,6 +1185,26 @@
         }
 
 
+        function bigConfettiBlast() {
+            for (let j = 0; j < 100; j++) {
+                const c = document.createElement("div");
+                c.className = "confetti";
+                c.style.left = "50%"; // center
+                c.style.top = "50%";
+                c.style.position = "fixed";
+                c.style.transform = `translate(-50%, -50%) rotate(${Math.random() * 360}deg)`;
+                const symbols = ["🎉", "✨", "🎊"];
+                c.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+                c.style.fontSize = 12 + Math.random() * 18 + "px";
+                c.style.opacity = 0.9;
+                c.style.animationDuration = 1 + Math.random() * 2 + "s";
+                document.body.appendChild(c);
+                setTimeout(() => c.remove(), 3000);
+            }
+        }
+
+
+
 
 
 
@@ -1012,7 +1214,6 @@
             }
 
         }
-
 
 
 
@@ -1097,8 +1298,7 @@
             final.innerText = "";
             final.classList.remove("show");
 
-            // 1️⃣ msg clear
-            msg.textContent = "";
+
 
             // 2️⃣ data-text set
             msg.setAttribute(
@@ -1106,8 +1306,6 @@
                 `Dear ${name},💖 You are loved more than words can say. Close your eyes and make a wish ✨`
             );
 
-            // 3️⃣ typing start
-            typeParagraphsOneByOne([msg]);
 
             // 🎉 confetti
             const confettiInterval = setInterval(confetti, 300);
@@ -1227,9 +1425,10 @@
 
         // Start petals immediately, keep creating every 300ms
         setInterval(createPetal, 300);
-        updateBackButton();
-        resetTypedParagraphs(".type-s1");
-        typeParagraphsOneByOne(document.querySelectorAll(".type-s1"));
+        // updateBackButton();
+        next(1);
+
+
 
 
     </script>
