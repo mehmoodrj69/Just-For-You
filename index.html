@@ -12,12 +12,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 
+
+
+
+    <!-- ========== CSS ========= -->
+
+
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            /* font-family: 'Poppins', sans-serif; */
             font-family: 'Merienda', cursive;
         }
 
@@ -25,6 +30,21 @@
             min-height: 100vh;
             background: url("images/bg.jpg") no-repeat center/cover;
             overflow: hidden;
+        }
+
+        body,
+        h1,
+        h2,
+        h3,
+        p,
+        .btn,
+        .aro-btn,
+        .final {
+            color: #fff;
+            text-shadow:
+                0 0 2px #000,
+                0 0 4px #000,
+                0 4px 6px #000;
         }
 
         .overlay {
@@ -53,7 +73,6 @@
             animation: fadeUp 1.2s ease;
         }
 
-
         .hidden {
             display: none;
         }
@@ -81,7 +100,6 @@
             display: inline-block;
         }
 
-
         @keyframes fadeUp {
             from {
                 opacity: 0;
@@ -93,6 +111,7 @@
                 transform: translateY(0);
             }
         }
+
 
         /* CONFETTI */
         .confetti {
@@ -134,8 +153,6 @@
         }
 
 
-
-
         /* ===== NEXT-LEVEL REALISTIC CAKE ===== */
         .cake-zone {
             width: 100%;
@@ -152,15 +169,16 @@
             animation: cakeBounce 2s ease-in-out infinite;
         }
 
+
         /* COMMON LAYER STYLE */
         .cake-layer {
             position: absolute;
             left: 0;
             width: 100%;
             height: 50px;
-            /* border-radius: 25px; */
             box-shadow: inset 0 -6px 12px rgba(0, 0, 0, 0.15), 0 6px 12px rgba(0, 0, 0, 0.3);
         }
+
 
         /* BOTTOM LAYER */
         .layer-bottom {
@@ -169,6 +187,7 @@
             background: linear-gradient(to bottom, #ff9eb5, #ff7b9e);
         }
 
+
         /* MIDDLE LAYER */
         .layer-mid {
             border-radius: 7px;
@@ -176,12 +195,14 @@
             background: linear-gradient(to bottom, #ffb6c1, #ff8ba9);
         }
 
+
         /* TOP LAYER */
         .layer-top {
             border-radius: 0 0 7px 7px;
             bottom: 100px;
             background: linear-gradient(to bottom, #ffe0ea, #ffb6c1);
         }
+
 
         /* LIGHT STRIP */
         .cake-layer::after {
@@ -195,6 +216,7 @@
             border-radius: 50px;
         }
 
+
         /* ICING */
         .cake-icing {
             position: absolute;
@@ -207,6 +229,7 @@
             box-shadow: inset 0 -4px 6px rgba(0, 0, 0, 0.12), 0 6px 10px rgba(0, 0, 0, 0.25);
             z-index: 3;
         }
+
 
         /* ICING DRIPS */
         .cake-icing::before,
@@ -230,7 +253,6 @@
         }
 
 
-
         /* CANDLE */
         .cake-candle {
             position: absolute;
@@ -244,6 +266,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             z-index: 5;
         }
+
 
         /* FLAME */
         .cake-flame {
@@ -259,6 +282,7 @@
             animation: flameFlicker 0.35s infinite alternate;
         }
 
+
         /* PLATE SHADOW */
         .cake-plate {
             position: absolute;
@@ -271,6 +295,7 @@
             border-radius: 50%;
             z-index: 1;
         }
+
 
         /* SPARKLES */
         .cake-sparkle {
@@ -301,6 +326,7 @@
             animation-delay: 1s;
         }
 
+
         /* CAKE BOUNCE */
         @keyframes cakeBounce {
 
@@ -314,6 +340,7 @@
             }
         }
 
+
         /* FLAME FLICKER */
         @keyframes flameFlicker {
             from {
@@ -324,6 +351,7 @@
                 transform: translateX(-50%) scale(1.15);
             }
         }
+
 
         /* SPARKLE ANIMATION */
         @keyframes sparkleAnim {
@@ -344,26 +372,24 @@
         }
 
 
-
-
-
         /* Petals */
         .petal {
             position: fixed;
+
             top: -10%;
             /* start slightly above viewport */
+
             width: 14px;
             height: 14px;
-            /* background: radial-gradient(circle at 30% 30%, #fff0f0, #ffc1d4); */
             background: radial-gradient(circle at 30% 30%, #e6ddff, #8a6fd1);
             box-shadow: 0 0 10px rgba(138, 111, 209, 0.4);
             opacity: 0.75;
-            /* opacity: 0.8; */
             border-radius: 50% 50% 50% 0;
             transform: rotate(0deg);
             animation: fall linear infinite;
             z-index: 2;
         }
+
 
         /* Petal fall animation */
         @keyframes fall {
@@ -376,32 +402,25 @@
             }
         }
 
-
-
-
-
         .back-btn {
             position: fixed;
             top: 20px;
             left: 20px;
             width: 50px;
-
-            /* base size */
             aspect-ratio: 1;
-            /* height = width, perfect circle */
             border-radius: 50%;
             border: none;
-            /* circle */
             background: linear-gradient(135deg, #7b5fc9, #6ec1ff);
             box-shadow: 0 8px 20px rgba(123, 95, 201, 0.35);
             display: flex;
             align-items: center;
             justify-content: center;
+
             font-size: 24px;
             /* arrow size */
+
             color: #fff;
             cursor: pointer;
-            /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25); */
             transition: all 0.2s ease;
             z-index: 1000;
         }
@@ -414,46 +433,6 @@
             transform: scale(0.95);
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
         }
-
-
-
-
-
-        /* HIGH CONTRAST TEXT – BLACK OUTLINE */
-        /* body,
-        h1,
-        h2,
-        h3,
-        p,
-        .btn,
-        .aro-btn,
-        .final {
-            color: #fff;
-            text-shadow:
-                -1px -1px 0 #000,
-                1px -1px 0 #000,
-                -1px 1px 0 #000,
-                1px 1px 0 #000;
-        } */
-
-
-
-        body,
-        h1,
-        h2,
-        h3,
-        p,
-        .btn,
-        .aro-btn,
-        .final {
-            color: #fff;
-            text-shadow:
-                0 0 2px #000,
-                0 0 4px #000,
-                0 4px 6px #000;
-        }
-
-
 
 
         /* Screen 3 typing text - smaller & clean */
@@ -470,7 +449,6 @@
             word-spacing: 0.08em;
             max-width: 100%;
         }
-
 
 
         /* S2 TITLE ANIMATION */
@@ -496,11 +474,7 @@
         }
 
 
-
-
-
         /* ===== MOBILE TEXT EXTRA BIG ===== */
-
 
         @media (max-width: 600px) {
             .card {
@@ -521,12 +495,11 @@
             #s3 h1 {
                 font-size: 1.15rem;
                 /* default se chota */
+
                 line-height: 1.6;
                 font-weight: 500;
             }
         }
-
-
 
 
         /* 📱 MOBILE HEADING CONTROL – Screen 1, 2, 4 */
@@ -538,22 +511,7 @@
                 font-size: 1.6rem;
                 line-height: 1.3;
             }
-
-            /* #s2 h1 {
-                font-size: 2.2rem;
-                line-height: 1.3;
-            }
-
-            #s4 h1 {
-                font-size: 2rem;
-                line-height: 1.35;
-            } */
-
         }
-
-
-
-
 
 
         /* ===== TYPING CURSOR – JACARANDA PREMIUM ===== */
@@ -576,7 +534,6 @@
 
             animation: blink 1s step-end infinite;
         }
-
 
 
         /* smooth blink */
@@ -610,13 +567,6 @@
         }
 
 
-
-
-
-
-
-
-
         /* ===== ULTRA BLAST CONFETTI ===== */
         .confetti-explode {
             position: fixed;
@@ -624,11 +574,14 @@
             top: 50%;
             pointer-events: none;
             will-change: transform, opacity;
+
             transform: translate3d(-50%, -50%, 0);
             /* ✅ GPU FORCE */
+
             backface-visibility: hidden;
             /* ✅ SMOOTH */
-            animation: explode 1.25s cubic-bezier(.12, .72, .38, 1) forwards;
+
+            animation: explode 1.8s cubic-bezier(.12, .72, .38, 1) forwards;
             text-shadow:
                 0 0 8px rgba(255, 236, 113, 0.6),
                 0 0 18px rgba(255, 236, 113, 0.6);
@@ -647,14 +600,59 @@
                 opacity: 0.5;
             }
         }
+
+
+        /* ===== SUBTLE SCREEN SHAKE ===== */
+        @keyframes subtleShake {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            20% {
+                transform: translate(-3px, 2px);
+            }
+
+            40% {
+                transform: translate(3px, -2px);
+            }
+
+            60% {
+                transform: translate(-2px, 1px);
+            }
+
+            80% {
+                transform: translate(2px, -1px);
+            }
+
+            100% {
+                transform: translate(0, 0);
+            }
+        }
+
+        .shake {
+            animation: subtleShake 0.25s ease;
+        }
     </style>
+
 </head>
 
 <body>
 
+
+
+
+
+    <!-- ========== HTML ========= -->
+
+
     <audio id="music" loop>
         <source src="music/music.mp3" type="audio/mpeg">
     </audio>
+
+    <audio id="blastSound">
+        <source src="music/blast.mp3" type="audio/mpeg">
+    </audio>
+
 
     <div class="overlay">
 
@@ -670,39 +668,16 @@
             <h1 class="s2-title">
                 Something Special Awaits 🌸
             </h1>
-
-            <!-- <p>
-                Tap gently… I’ve poured a little piece of my heart into a small effort to create something truly special
-                just for you 💖
-            </p>
-            <br>
-            <p>
-                I hope this brings a smile to your heart and reminds you that you are truly someone’s special one, and
-                how deeply cherished you are ✨
-            </p> -->
-
+            
             <p class="type-s1"
                 data-text="Tap gently… I’ve poured a little piece of my heart into a small effort to create something truly special just for you 💖">
             </p>
-
-
-            <!-- <p class="type-s1">
-                Tap gently… I’ve poured a little piece of my heart into a small effort to create something truly special
-                just for you 💖
-            </p> -->
 
             <br>
 
             <p class="type-s1"
                 data-text="I hope this brings a smile to your heart and reminds you that you are truly someone’s special one, and how deeply cherished you are ✨">
             </p>
-
-
-            <!-- <p class="type-s1">
-                I hope this brings a smile to your heart and reminds you that you are truly someone’s special one, and
-                how deeply cherished you are ✨
-            </p> -->
-
 
             <div class="btn" onclick="next(2)">
                 Tap to Continue
@@ -711,68 +686,45 @@
         </div>
 
 
-
-
         <!-- ========== SCREEN 2 ========== -->
 
         <div class="card hidden" id="s2">
-
-            <!-- <div class="back-btn ripple" onclick="goBack(event)">←</div> -->
-
-            <!-- <h1>
-                Happy Birthday Ishmal 🎂
-            </h1> -->
 
             <h1 class="s2-title">
                 Happy Birthday Ishmal 🎂
             </h1>
 
-            <!-- <p>
-                You’re one of those rare people who makes life brighter just by being in it. You’re amazing exactly as
-                you are, and you deserve all the happiness and love the world can give 🌸
-            </p> -->
-
             <p class="type-s2"
                 data-text="You’re one of those rare people who makes life brighter just by being in it. You’re amazing exactly as you are, and you deserve all the happiness and love the world can give 🌸">
             </p>
 
+            <div class="btn" onclick="next(3)">
+                Tap to Continue
+            </div>
 
-            <!-- <p class="type-s2">
-                You’re one of those rare people who makes life brighter just by being in it.
-                You’re amazing exactly as you are, and you deserve all the happiness and love the world can give 🌸
-            </p> -->
-
-
-            <div class="btn" onclick="next(3)">Tap to Continue</div>
         </div>
-
-
-
 
 
         <!-- ========== SCREEN 3 ========== -->
 
         <div class="card hidden" id="s3">
 
-            <!-- <div class="back-btn ripple" onclick="goBack(event)">←</div> -->
+            <h1 id="typing"> </h1>
 
-            <h1 id="typing"></h1>
-            <div class="btn" onclick="next(4)">Tap to Continue</div>
+            <div class="btn" onclick="next(4)">
+                Tap to Continue
+            </div>
+
         </div>
-
-
-
-
 
 
         <!-- ========== SCREEN 4 ========== -->
 
         <div class="card hidden" id="s4">
 
-            <!-- <div class="back-btn ripple" onclick="goBack(event)">←</div> -->
-
             <div class="cake-zone">
                 <div class="cake-body">
+
                     <div class="cake-layer layer-bottom"></div>
                     <div class="cake-layer layer-mid"></div>
                     <div class="cake-layer layer-top"></div>
@@ -780,21 +732,31 @@
                     <div class="cake-candle">
                         <div class="cake-flame"></div>
                     </div>
+
                 </div>
             </div>
 
-            <h1 class="s2-title">Make a Wish 🎂</h1>
-
-            <!-- <p id="msg"></p> -->
+            <h1 class="s2-title">
+                Make a Wish 🎂
+            </h1>
 
             <p id="msg" data-text=""></p>
 
             <p class="final" id="final"></p>
+
         </div>
 
     </div>
 
+
+
+
+
+    <!-- ========== JAVASCRIPT ========= -->
+
+
     <script>
+
         const name = "Ishmal";
         const music = document.getElementById("music");
         const typing = document.getElementById("typing");
@@ -804,6 +766,7 @@
         let typingTimeout; // ← ye naya line add karna hai #s3
         let paraTimeouts = []; // ← typing s1, s2, s4
         let finalTimeout; // ← s4 final text delay handle karega
+
         // ===== TYPING RUN-ONCE FLAGS =====
         let s1Typed = false;
         let s2Typed = false;
@@ -811,22 +774,14 @@
         let s4Typed = false;
 
 
-
-
-
-
-
-
-
         // ===== SAFE PARAGRAPH TYPING SYSTEM =====
-
         function clearParagraphTyping() {
             paraTimeouts.forEach(t => clearTimeout(t));
             paraTimeouts = [];
         }
 
-
         function typeParagraphsOneByOne(elements, speed = 45, onComplete = null) {
+
             clearParagraphTyping();
             let pIndex = 0;
 
@@ -848,8 +803,10 @@
 
                     if (charIndex < fullText.length) {
                         paraTimeouts.push(setTimeout(typeChar, speed));
+
                     } else {
                         const cursor = el.querySelector(".cursor");
+
                         if (cursor) {
                             cursor.style.opacity = "0";
                             cursor.style.boxShadow = "0 0 20px rgba(138,111,209,0.9)";
@@ -864,44 +821,11 @@
             typeNextParagraph();
         }
 
-
-
-        // function resetTypedParagraphs(selector) {
-        //     document.querySelectorAll(selector).forEach(p => {
-        //         p.textContent = ""; // poora text clear
-        //     });
-        // }
-
         function resetTypedParagraphs(selector) {
             document.querySelectorAll(selector).forEach(p => {
                 p.innerHTML = "";
             });
         }
-
-
-
-
-
-
-        // function typeText() {
-        //     // Pehle wale typing ko rok do
-        //     if (typingTimeout) clearTimeout(typingTimeout);
-
-        //     let index = 0;
-        //     typing.textContent = "";
-
-        //     function write() {
-        //         typing.textContent += text[index];
-        //         index++;
-
-        //         if (index < text.length) {
-        //             const delay = Math.random() * 40 + 35;
-        //             typingTimeout = setTimeout(write, delay); // ← timeout id store karo
-        //         }
-        //     }
-
-        //     write();
-        // }
 
         function typeText(onComplete) {
             if (typingTimeout) clearTimeout(typingTimeout);
@@ -920,6 +844,7 @@
                     const delay = Math.random() * 40 + 35;
                     typingTimeout = setTimeout(write, delay);
                 } else {
+
                     // cursor fade + glow
                     setTimeout(() => {
                         cursor.style.boxShadow = "0 0 22px rgba(138,111,209,1)";
@@ -935,33 +860,8 @@
             write();
         }
 
-
-
-        // function typeText() {
-        //     let index = 0;
-        //     typing.textContent = "";
-
-        //     function write() {
-        //         // random natural delay (human typing feel)
-        //         const delay = Math.random() * 40 + 35;
-
-        //         typing.textContent += text[index];
-        //         index++;
-
-        //         if (index < text.length) {
-        //             setTimeout(write, delay);
-        //         }
-        //     }
-
-        //     write();
-        // }
-
-
-
-
-
-
         function next(n) {
+
             // 🔒 hide all buttons on new screen
             document.querySelectorAll("#s" + n + " .btn").forEach(b => {
                 b.classList.remove("show");
@@ -974,22 +874,6 @@
             currentScreen = n; // ab visible screen ka number update ho gaya
 
             music.play().catch(() => { });
-
-
-
-            // #s1, #s2, #s4 typing
-
-            // if (n === 1) {
-            //     typeParagraphsOneByOne(document.querySelectorAll(".type-s1"));
-            // }
-
-            // if (n === 1) {
-            //     clearParagraphTyping();               // 🧹 purane timeouts band
-            //     resetTypedParagraphs(".type-s1");     // 🧼 dono <p> clear
-            //     typeParagraphsOneByOne(
-            //         document.querySelectorAll(".type-s1")
-            //     );
-            // }
 
             if (n === 1) {
 
@@ -1030,42 +914,11 @@
                 }, 100);
             }
 
-
-
-
-
-
-            // if (n === 2) {
-
-            //     // 🔄 pehle sab clear
-            //     clearParagraphTyping();
-            //     resetTypedParagraphs(".type-s2");
-
-            //     const title = document.querySelector("#s2 .s2-title");
-
-            //     // h1 ko reset state me lao
-            //     title.classList.remove("show");
-
-            //     // thora sa delay taake DOM ready ho
-            //     setTimeout(() => {
-
-            //         // 🎬 h1 animation start
-            //         title.classList.add("show");
-
-            //         // ⏳ h1 animation ke baad paragraph typing
-            //         setTimeout(() => {
-            //             typeParagraphsOneByOne(
-            //                 document.querySelectorAll(".type-s2")
-            //             );
-            //         }, 1200); // same as CSS animation time
-
-            //     }, 100);
-            // }
-
             if (n === 2) {
                 const title = document.querySelector("#s2 .s2-title");
 
                 if (!s2Typed) {
+
                     // 1️⃣ Reset everything
                     clearParagraphTyping();
                     resetTypedParagraphs(".type-s2");
@@ -1084,14 +937,13 @@
                             // 5️⃣ Big confetti blast
                             BUTTERY_MEGA_BLAST();
 
-
-
                             // 6️⃣ After confetti complete (3s), start paragraph typing
                             setTimeout(() => {
                                 typeParagraphsOneByOne(
                                     document.querySelectorAll(".type-s2"),
                                     45,
                                     () => {
+
                                         // 7️⃣ After typing complete, show button
                                         document.querySelector("#s2 .btn").classList.add("show");
                                     }
@@ -1106,6 +958,7 @@
                     s2Typed = true;
 
                 } else {
+
                     // Second visit → sirf h1 animation
                     title.classList.add("show");
 
@@ -1118,19 +971,6 @@
                     document.querySelector("#s2 .btn").classList.add("show");
                 }
             }
-
-
-
-
-
-
-            // // #s3 typing
-
-            // if (n === 3) {
-            //     typing.innerHTML = "";
-            //     i = 0;
-            //     typeText();
-            // }
 
             if (n === 3) {
 
@@ -1150,20 +990,6 @@
                     document.querySelector("#s3 .btn").classList.add("show");
                 }
             }
-
-
-
-
-
-
-            // if (n === 4) {
-            //     const msg = document.getElementById("msg");
-            //     msg.setAttribute(
-            //         "data-text",
-            //         `Dear ${name},💖 You are loved more than words can say. Close your eyes and make a wish ✨`
-            //     );
-            //     typeParagraphsOneByOne([msg]);
-            // }
 
             if (n === 4) {
 
@@ -1207,27 +1033,17 @@
                         document.querySelector("#s4 .btn")?.classList.add("show");
                     }
 
-
                 }, 100);
 
                 finale();
             }
 
-
-
-
-
             else if (typingTimeout) clearTimeout(typingTimeout); // ← ye line add kar do
-
 
             if (n === 4) finale();
 
             updateBackButton(); // <-- yaha call
         }
-
-
-
-
 
         function prev() {
             if (currentScreen > 1) {
@@ -1235,8 +1051,6 @@
             }
 
         }
-
-
 
         let touchStartX = 0;
 
@@ -1251,10 +1065,6 @@
             }
         });
 
-
-
-
-
         function updateBackButton() {
             const btn = document.querySelector(".back-btn");
             if (currentScreen === 1) {
@@ -1264,62 +1074,18 @@
             }
         }
 
-
-
-
-
-
-        // function finale() {
-        //     const msg = document.getElementById("msg");
-        //     const final = document.getElementById("final");
-
-
-        //     // 1️⃣ pehle text bilkul clear
-        //     msg.textContent = "";
-
-        //     // 2️⃣ data-text set karo
-        //     msg.setAttribute(
-        //         "data-text",
-        //         `Dear ${name},💖 You are loved more than words can say. Close your eyes and make a wish ✨`
-        //     );
-
-        //     // 3️⃣ typing start karo
-        //     typeParagraphsOneByOne([msg]);
-
-        //     // Start confetti only here
-        //     const confettiInterval = setInterval(confetti, 300);
-        //     const heartInterval = setInterval(heart, 500);
-
-        //     // Show final text after 2.5s
-        //     setTimeout(() => {
-        //         final.innerText = `This was made just for you, ${name} 💖`;
-        //         final.classList.add("show");
-        //     }, 4800);
-
-        //     // Stop confetti after some time (optional, 10s)
-        //     setTimeout(() => {
-        //         clearInterval(confettiInterval);
-        //         clearInterval(heartInterval);
-        //     }, 10000);
-        // }
-
-
         function finale() {
             const msg = document.getElementById("msg");
             const final = document.getElementById("final");
-
 
             // 🔄 RESET final text every time screen opens
             if (finalTimeout) clearTimeout(finalTimeout);
             final.textContent = "";
             final.classList.remove("show");
 
-
             // 🔁 RESET FINAL TEXT (MOST IMPORTANT)
             final.innerText = "";
             final.classList.remove("show");
-
-
 
             // 2️⃣ data-text set
             msg.setAttribute(
@@ -1327,16 +1093,9 @@
                 `Dear ${name},💖 You are loved more than words can say. Close your eyes and make a wish ✨`
             );
 
-
             // 🎉 confetti
             const confettiInterval = setInterval(confetti, 300);
             const heartInterval = setInterval(heart, 500);
-
-            // // ⏳ FINAL TEXT — SAME DELAY EVERY TIME
-            // setTimeout(() => {
-            //     final.innerText = `This was made just for you, ${name} 💖`;
-            //     final.classList.add("show");
-            // }, 4800);
 
             // ⏳ show final line AFTER typing completes
             finalTimeout = setTimeout(() => {
@@ -1351,10 +1110,6 @@
                 clearInterval(heartInterval);
             }, 10000);
         }
-
-
-
-
 
         function confetti() {
             const c = document.createElement("div");
@@ -1401,8 +1156,6 @@
             setTimeout(() => c.remove(), 6000);
         }
 
-
-
         function heart() {
             const h = document.createElement("div");
             h.className = "heart";
@@ -1413,8 +1166,6 @@
             document.body.appendChild(h);
             setTimeout(() => h.remove(), 7000);
         }
-
-
 
         function createPetal() {
             const petal = document.createElement("div");
@@ -1439,23 +1190,40 @@
         }
 
 
+        // 🔊 soft blast sound
+        function playBlastSound() {
+            const sound = document.getElementById("blastSound");
+            if (!sound) return;
+            sound.currentTime = 0;
+            sound.volume = 0.45; // 🔉 soft
+            sound.play().catch(() => { });
+        }
 
 
+        // 📱 subtle screen shake
+        function screenShake() {
+            const overlay = document.querySelector(".overlay");
+            if (!overlay) return;
 
+            overlay.classList.add("shake");
 
-
-
-
-
-
+            setTimeout(() => {
+                overlay.classList.remove("shake");
+            }, 300); // 0.3 sec
+        }
 
 
         function BUTTERY_MEGA_BLAST() {
+
+            // 🎧 + 📱 EFFECTS — ek hi moment pe
+            playBlastSound();   // sound
+            screenShake();      // shake
+
             const symbols = ["✨", "💜", "🎉", "🎊", "💫", "💖"];
 
-            const TOTAL_PARTICLES = 360;   // 💥 bari blast
-            const DURATION = 1800;         // ⏱️ 1.8 seconds blast
-            const PER_FRAME = 6;           // 🎯 har frame thori confetti
+            const TOTAL_PARTICLES = 420;
+            const DURATION = 1800;
+            const PER_FRAME = 3;
 
             let created = 0;
             let startTime = null;
@@ -1465,10 +1233,8 @@
 
                 const elapsed = timestamp - startTime;
 
-                // ⛔ stop condition
                 if (created >= TOTAL_PARTICLES || elapsed > DURATION) return;
 
-                // 🔹 thori thori confetti
                 for (let i = 0; i < PER_FRAME; i++) {
                     createOneBlastParticle(symbols);
                     created++;
@@ -1480,19 +1246,6 @@
 
             requestAnimationFrame(spawnFrame);
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         function createOneBlastParticle(symbols) {
             const p = document.createElement("div");
@@ -1520,28 +1273,11 @@
         }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         // Start petals immediately, keep creating every 300ms
         setInterval(createPetal, 300);
+
         // updateBackButton();
         next(1);
-
-
-
 
     </script>
 
