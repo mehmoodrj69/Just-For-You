@@ -632,6 +632,25 @@
         .shake {
             animation: subtleShake 0.25s ease;
         }
+
+
+        /* ===== FADE-IN LETTERS FOR TYPING TEXT ===== */
+        .fade-letter {
+            opacity: 0;
+            display: inline;
+            /* important: letters inline, words wrap properly */
+            animation: fadeInLetter 1s forwards;
+        }
+
+        @keyframes fadeInLetter {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
     </style>
 
 </head>
@@ -653,6 +672,14 @@
         <source src="music/blast.mp3" type="audio/mpeg">
     </audio>
 
+    <audio id="typeSound" preload="auto">
+        <source src="music/type.wav" type="audio/wav">
+    </audio>
+
+    <audio id="spaceSound" preload="auto">
+        <source src="music/space.wav" type="audio/wav">
+    </audio>
+
 
     <div class="overlay">
 
@@ -668,8 +695,8 @@
             <h1 class="s2-title">
                 Something Special Awaits 🌸
             </h1>
-            
-            <p class="type-s1"
+
+            <!-- <p class="type-s1"
                 data-text="Tap gently… I’ve poured a little piece of my heart into a small effort to create something truly special just for you 💖">
             </p>
 
@@ -677,7 +704,7 @@
 
             <p class="type-s1"
                 data-text="I hope this brings a smile to your heart and reminds you that you are truly someone’s special one, and how deeply cherished you are ✨">
-            </p>
+            </p> -->
 
             <div class="btn" onclick="next(2)">
                 Tap to Continue
@@ -760,18 +787,29 @@
         const name = "Ishmal";
         const music = document.getElementById("music");
         const typing = document.getElementById("typing");
-        const text = `May ALLAH bless you with endless joy, love, and success 💖✨ May every step you take be guided with happiness 🌸, every dream you hold turn into reality and may your heart always be filled with peace, laughter, and beautiful moments. May  this year bring you new adventures, sweet memories, and countless reasons to smile. Happy Birthday to someone truly special 🎉🎂💖`;
+        const text = `May ALLAH bless you with endless joy, love, and success 💖✨. May every step you take be guided with happiness 🌸, every dream you hold turn into reality and may your heart always be filled with peace, laughter, and beautiful moments. May  this year bring you new adventures, sweet memories, and countless reasons to smile. Happy Birthday to someone truly special 🎉🎂💖`;
+        const typeSound = document.getElementById("typeSound");
+        const spaceSound = document.getElementById("spaceSound");
+        spaceSound.volume = 0.22; // letters se thori soft
+
+        // mobile + smooth typing ke liye
+        typeSound.volume = 0.4;
+        typeSound.preload = "auto";
+
         let i = 0;
         let currentScreen = 1;
         let typingTimeout; // ← ye naya line add karna hai #s3
         let paraTimeouts = []; // ← typing s1, s2, s4
         let finalTimeout; // ← s4 final text delay handle karega
+        let musicStarted = false; // 🔒 music sirf ek baar start hoga
 
         // ===== TYPING RUN-ONCE FLAGS =====
         let s1Typed = false;
         let s2Typed = false;
         let s3Typed = false;
         let s4Typed = false;
+
+
 
 
         // ===== SAFE PARAGRAPH TYPING SYSTEM =====
@@ -798,11 +836,34 @@
                 let charIndex = 0;
 
                 function typeChar() {
-                    el.querySelector(".text").textContent += fullText[charIndex];
+
+                    // split by grapheme clusters (emoji-friendly)
+                    const char = Array.from(fullText)[charIndex]; // ← ye line important hai
+                    const span = document.createElement("span");
+                    span.textContent = char;
+                    span.classList.add("fade-letter");
+                    el.querySelector(".text").appendChild(span);
                     charIndex++;
 
+                    // 🔊 typewriter click
+                    if (char === " ") {
+                        playSpaceSound(); // 👈 space ke liye soft sound
+                    } else {
+                        playTypeSound();  // 👈 normal letters
+                    }
+
+
+
                     if (charIndex < fullText.length) {
-                        paraTimeouts.push(setTimeout(typeChar, speed));
+
+                        let charDelay = speed; // default speed
+
+                        // 🟣 Punctuation pause
+                        const char = fullText[charIndex];
+                        if ([".", "!", "?"].includes(char)) charDelay += 400; // full stop long pause
+                        if ([",", ";"].includes(char)) charDelay += 200; // comma medium pause
+
+                        paraTimeouts.push(setTimeout(typeChar, charDelay));
 
                     } else {
                         const cursor = el.querySelector(".cursor");
@@ -837,12 +898,35 @@
             const cursor = typing.querySelector(".cursor");
 
             function write() {
-                textSpan.textContent += text[index];
+
+                const char = Array.from(text)[index];
+                const span = document.createElement("span");
+
+                span.textContent = char;
+                span.classList.add("fade-letter");
+                textSpan.appendChild(span);
                 index++;
 
+                // 🔊 typewriter click
+                if (char === " ") {
+                    playSpaceSound();
+                } else {
+                    playTypeSound();
+                }
+
+
+
                 if (index < text.length) {
-                    const delay = Math.random() * 40 + 35;
+
+                    let delay = Math.random() * 40 + 35; // normal random speed
+                    const char = text[index];
+
+                    // 🟣 Punctuation pause
+                    if ([".", "!", "?"].includes(char)) delay += 400;
+                    if ([",", ";"].includes(char)) delay += 200;
+
                     typingTimeout = setTimeout(write, delay);
+
                 } else {
 
                     // cursor fade + glow
@@ -860,6 +944,31 @@
             write();
         }
 
+
+        function playTypeSound() {
+            if (!typeSound) return;
+
+            // 🎧 ultra subtle – almost felt, not heard
+            typeSound.volume = 0.06 + Math.random() * 0.04; // 0.06 – 0.10
+            typeSound.playbackRate = 0.95 + Math.random() * 0.06; // very soft variation
+
+            typeSound.currentTime = 0;
+            typeSound.play().catch(() => { });
+        }
+
+
+        function playSpaceSound() {
+            if (!spaceSound) return;
+
+            // 🌸 softer than letters, almost air
+            spaceSound.volume = 0.03 + Math.random() * 0.03; // 0.03 – 0.06
+            spaceSound.playbackRate = 0.94 + Math.random() * 0.05;
+
+            spaceSound.currentTime = 0;
+            spaceSound.play().catch(() => { });
+        }
+
+
         function next(n) {
 
             // 🔒 hide all buttons on new screen
@@ -872,8 +981,6 @@
             document.getElementById("s" + n).classList.remove("hidden");
 
             currentScreen = n; // ab visible screen ka number update ho gaya
-
-            music.play().catch(() => { });
 
             if (n === 1) {
 
@@ -937,6 +1044,15 @@
                             // 5️⃣ Big confetti blast
                             BUTTERY_MEGA_BLAST();
 
+                            // 🎵 Start background music AFTER blast + 1s gap
+                            if (!musicStarted) {
+                                setTimeout(() => {
+                                    music.volume = 0.5;   // smooth volume
+                                    music.play().catch(() => { });
+                                    musicStarted = true;
+                                }, 2800);
+                            }
+
                             // 6️⃣ After confetti complete (3s), start paragraph typing
                             setTimeout(() => {
                                 typeParagraphsOneByOne(
@@ -948,7 +1064,7 @@
                                         document.querySelector("#s2 .btn").classList.add("show");
                                     }
                                 );
-                            }, 3000); // confetti duration
+                            }, 5000); // blast complete + 2s pause
 
                         }, 1200); // h1 animation duration
 
