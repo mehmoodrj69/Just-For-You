@@ -696,7 +696,7 @@
                 Something Special Awaits 🌸
             </h1>
 
-            <!-- <p class="type-s1"
+            <p class="type-s1"
                 data-text="Tap gently… I’ve poured a little piece of my heart into a small effort to create something truly special just for you 💖">
             </p>
 
@@ -704,7 +704,7 @@
 
             <p class="type-s1"
                 data-text="I hope this brings a smile to your heart and reminds you that you are truly someone’s special one, and how deeply cherished you are ✨">
-            </p> -->
+            </p>
 
             <div class="btn" onclick="next(2)">
                 Tap to Continue
@@ -831,6 +831,9 @@
 
                 const el = elements[pIndex];
                 const fullText = el.getAttribute("data-text");
+
+                const chars = Array.from(fullText); // ✅ emoji-safe array
+
                 el.innerHTML = '<span class="text"></span><span class="cursor"></span>';
 
                 let charIndex = 0;
@@ -838,7 +841,7 @@
                 function typeChar() {
 
                     // split by grapheme clusters (emoji-friendly)
-                    const char = Array.from(fullText)[charIndex]; // ← ye line important hai
+                    const char = chars[charIndex];  // ← ye line important hai
                     const span = document.createElement("span");
                     span.textContent = char;
                     span.classList.add("fade-letter");
@@ -854,14 +857,15 @@
 
 
 
-                    if (charIndex < fullText.length) {
+                    if (charIndex < chars.length) {
 
                         let charDelay = speed; // default speed
 
                         // 🟣 Punctuation pause
-                        const char = fullText[charIndex];
-                        if ([".", "!", "?"].includes(char)) charDelay += 400; // full stop long pause
-                        if ([",", ";"].includes(char)) charDelay += 200; // comma medium pause
+                        const nextChar = chars[charIndex];
+
+                        if ([".", "!", "?"].includes(nextChar)) charDelay += 400;
+                        if ([",", ";"].includes(nextChar)) charDelay += 200;
 
                         paraTimeouts.push(setTimeout(typeChar, charDelay));
 
@@ -892,6 +896,9 @@
             if (typingTimeout) clearTimeout(typingTimeout);
 
             let index = 0;
+
+            const chars = Array.from(text); // ✅ emoji-safe
+
             typing.innerHTML = '<span class="text"></span><span class="cursor"></span>';
 
             const textSpan = typing.querySelector(".text");
@@ -899,7 +906,7 @@
 
             function write() {
 
-                const char = Array.from(text)[index];
+                const char = chars[index];
                 const span = document.createElement("span");
 
                 span.textContent = char;
@@ -916,14 +923,14 @@
 
 
 
-                if (index < text.length) {
+                if (index < chars.length) {
 
                     let delay = Math.random() * 40 + 35; // normal random speed
-                    const char = text[index];
+                    const nextChar = chars[index];
 
                     // 🟣 Punctuation pause
-                    if ([".", "!", "?"].includes(char)) delay += 400;
-                    if ([",", ";"].includes(char)) delay += 200;
+                    if ([".", "!", "?"].includes(nextChar)) delay += 400;
+                    if ([",", ";"].includes(nextChar)) delay += 200;
 
                     typingTimeout = setTimeout(write, delay);
 
@@ -961,8 +968,8 @@
             if (!spaceSound) return;
 
             // 🌸 softer than letters, almost air
-            spaceSound.volume = 0.02 + Math.random() * 0.02; 
-            spaceSound.playbackRate = 0.64 + Math.random() * 0.05;
+            spaceSound.volume = 0.005 + Math.random() * 0.01;
+            spaceSound.playbackRate = 0.56 + Math.random() * 0.04;
 
             spaceSound.currentTime = 0;
             spaceSound.play().catch(() => { });
