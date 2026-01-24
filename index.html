@@ -696,7 +696,7 @@
                 Something Special Awaits 🌸
             </h1>
 
-            <!-- <p class="type-s1"
+            <p class="type-s1"
                 data-text="Tap gently… I’ve poured a little piece of my heart into a small effort to create something truly special just for you 💖">
             </p>
 
@@ -704,7 +704,7 @@
 
             <p class="type-s1"
                 data-text="I hope this brings a smile to your heart and reminds you that you are truly someone’s special one, and how deeply cherished you are ✨">
-            </p> -->
+            </p>
 
             <div class="btn" onclick="next(2)">
                 Tap to Continue
@@ -949,8 +949,8 @@
             if (!typeSound) return;
 
             // 🎧 ultra subtle – almost felt, not heard
-            typeSound.volume = 0.06 + Math.random() * 0.04; // 0.06 – 0.10
-            typeSound.playbackRate = 0.95 + Math.random() * 0.06; // very soft variation
+            typeSound.volume = 0.04 + Math.random() * 0.02;
+            typeSound.playbackRate = 0.96 + Math.random() * 0.04;
 
             typeSound.currentTime = 0;
             typeSound.play().catch(() => { });
