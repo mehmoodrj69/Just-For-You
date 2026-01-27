@@ -639,7 +639,7 @@
             opacity: 0;
             display: inline;
             /* important: letters inline, words wrap properly */
-            animation: fadeInLetter 1s forwards;
+            animation: fadeInLetter 0.7s forwards;
         }
 
         @keyframes fadeInLetter {
@@ -650,6 +650,19 @@
             to {
                 opacity: 1;
             }
+        }
+
+
+        /* ===== GPU FORCE FOR SMOOTHNESS ===== */
+        .card,
+        .confetti,
+        .confetti-explode,
+        .heart,
+        .petal,
+        .fade-letter {
+            will-change: transform, opacity;
+            transform: translateZ(0);
+            backface-visibility: hidden;
         }
     </style>
 
@@ -696,9 +709,9 @@
                 Something Special Awaits 🌸
             </h1>
 
-            <!-- <p class="type-s1"
+            <p class="type-s1"
                 data-text="Tap gently… I’ve poured a little piece of my heart into a small effort to create something truly special just for you 💖">
-            </p> -->
+            </p>
 
             <!-- <br>
 
@@ -788,6 +801,7 @@
         const music = document.getElementById("music");
         const typing = document.getElementById("typing");
         const text = `May ALLAH bless you with endless joy, love, and success 💖✨. May every step you take be guided with happiness 🌸, every dream you hold turn into reality and may your heart always be filled with peace, laughter, and beautiful moments. May  this year bring you new adventures, sweet memories, and countless reasons to smile. Happy Birthday to someone truly special 🎉🎂💖`;
+        const final = document.getElementById("final");
         const typeSound = document.getElementById("typeSound");
         const spaceSound = document.getElementById("spaceSound");
         spaceSound.volume = 0.22; // letters se thori soft
@@ -808,6 +822,10 @@
         let s2Typed = false;
         let s3Typed = false;
         let s4Typed = false;
+
+        let lastTypeSoundTime = 0;
+
+
 
 
 
@@ -953,12 +971,13 @@
 
 
         function playTypeSound() {
-            if (!typeSound) return;
+            const now = performance.now();
+            if (now - lastTypeSoundTime < 40) return; // throttle
 
-            // 🎧 ultra subtle – almost felt, not heard
+            lastTypeSoundTime = now;
+
             typeSound.volume = 0.02 + Math.random() * 0.03;
             typeSound.playbackRate = 0.66 + Math.random() * 0.05;
-
             typeSound.currentTime = 0;
             typeSound.play().catch(() => { });
         }
@@ -978,6 +997,8 @@
 
         function next(n) {
 
+            document.querySelectorAll(".confetti, .heart").forEach(e => e.remove());
+
             // 🔒 hide all buttons on new screen
             document.querySelectorAll("#s" + n + " .btn").forEach(b => {
                 b.classList.remove("show");
@@ -988,6 +1009,8 @@
             document.getElementById("s" + n).classList.remove("hidden");
 
             currentScreen = n; // ab visible screen ka number update ho gaya
+
+            if (typingTimeout) clearTimeout(typingTimeout); // ← ye line add kar do
 
             if (n === 1) {
 
@@ -1172,14 +1195,18 @@
                 finale();
             }
 
-            else if (typingTimeout) clearTimeout(typingTimeout); // ← ye line add kar do
 
-            if (n === 4) finale();
 
             updateBackButton(); // <-- yaha call
         }
 
         function prev() {
+
+            typeSound.pause();
+            typeSound.currentTime = 0;
+            spaceSound.pause();
+            spaceSound.currentTime = 0;
+
             if (currentScreen > 1) {
                 next(currentScreen - 1); // next() automatically card switch + updateBackButton karega
             }
@@ -1194,7 +1221,7 @@
 
         document.addEventListener('touchend', (e) => {
             let touchEndX = e.changedTouches[0].screenX;
-            if (touchEndX - touchStartX > 50) { // swipe right threshold
+            if (touchEndX - touchStartX > 80) { // swipe right threshold
                 prev();
             }
         });
@@ -1214,22 +1241,15 @@
 
             // 🔄 RESET final text every time screen opens
             if (finalTimeout) clearTimeout(finalTimeout);
+
+            // 🔁 RESET FINAL TEXT (MOST IMPORTANT)
             final.textContent = "";
             final.classList.remove("show");
 
-            // 🔁 RESET FINAL TEXT (MOST IMPORTANT)
-            final.innerText = "";
-            final.classList.remove("show");
-
-            // 2️⃣ data-text set
-            msg.setAttribute(
-                "data-text",
-                `Dear ${name},💖 You are loved more than words can say. Close your eyes and make a wish ✨`
-            );
 
             // 🎉 confetti
-            const confettiInterval = setInterval(confetti, 300);
-            const heartInterval = setInterval(heart, 500);
+            const confettiInterval = setInterval(confetti, 500);
+            const heartInterval = setInterval(heart, 700);
 
 
             // 🛑 stop effects
@@ -1314,7 +1334,10 @@
 
             setTimeout(() => {
                 petal.remove();
+                petalCount--;
             }, 12000);
+
+
         }
 
 
@@ -1344,14 +1367,13 @@
         function BUTTERY_MEGA_BLAST() {
 
             // 🎧 + 📱 EFFECTS — ek hi moment pe
-            setTimeout(() => {
-                playBlastSound();
-            }, -150);
+            playBlastSound();
+
             screenShake();      // shake
 
             const symbols = ["✨", "💜", "🎉", "🎊", "💫", "💖"];
 
-            const TOTAL_PARTICLES = 420;
+            const TOTAL_PARTICLES = 350;
             const DURATION = 1800;
             const PER_FRAME = 3;
 
@@ -1404,7 +1426,18 @@
 
 
         // Start petals immediately, keep creating every 300ms
-        setInterval(createPetal, 300);
+        // setInterval(createPetal, 300);
+
+        let petalCount = 0;
+        const MAX_PETALS = 25; // screen pe max petals
+
+        setInterval(() => {
+            if (petalCount < MAX_PETALS) {
+                createPetal();
+                petalCount++;
+            }
+        }, 400);
+
 
         // updateBackButton();
         next(1);
