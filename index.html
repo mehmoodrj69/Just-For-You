@@ -696,15 +696,15 @@
                 Something Special Awaits 🌸
             </h1>
 
-            <p class="type-s1"
+            <!-- <p class="type-s1"
                 data-text="Tap gently… I’ve poured a little piece of my heart into a small effort to create something truly special just for you 💖">
-            </p>
+            </p> -->
 
-            <br>
+            <!-- <br>
 
             <p class="type-s1"
                 data-text="I hope this brings a smile to your heart and reminds you that you are truly someone’s special one, and how deeply cherished you are ✨">
-            </p>
+            </p> -->
 
             <div class="btn" onclick="next(2)">
                 Tap to Continue
@@ -1141,9 +1141,17 @@
                                 [msg],
                                 45,
                                 () => {
+
+                                    // 🟢 typing COMPLETE hone ke baad
+                                    setTimeout(() => {
+                                        final.textContent = `This was made just for you, ${name} 💖`;
+                                        final.classList.add("show");
+                                    }, 900); // soft emotional pause
+
                                     document.querySelector("#s4 .btn")?.classList.add("show");
                                 }
                             );
+
 
                             s4Typed = true;
                         }, 1200);
@@ -1151,6 +1159,9 @@
                     } else {
                         msg.textContent =
                             `Dear ${name},💖 You are loved more than words can say. Close your eyes and make a wish ✨`;
+
+                        final.textContent = `This was made just for you, ${name} 💖`;
+                        final.classList.add("show");
 
                         // ✅ agar future me button ho
                         document.querySelector("#s4 .btn")?.classList.add("show");
@@ -1219,12 +1230,6 @@
             // 🎉 confetti
             const confettiInterval = setInterval(confetti, 300);
             const heartInterval = setInterval(heart, 500);
-
-            // ⏳ show final line AFTER typing completes
-            finalTimeout = setTimeout(() => {
-                final.textContent = `This was made just for you, ${name} 💖`;
-                final.classList.add("show");
-            }, 4800);
 
 
             // 🛑 stop effects
@@ -1339,7 +1344,9 @@
         function BUTTERY_MEGA_BLAST() {
 
             // 🎧 + 📱 EFFECTS — ek hi moment pe
-            playBlastSound();   // sound
+            setTimeout(() => {
+                playBlastSound();
+            }, -150);
             screenShake();      // shake
 
             const symbols = ["✨", "💜", "🎉", "🎊", "💫", "💖"];
